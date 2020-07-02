@@ -1,0 +1,23 @@
+{
+  "name": "card-generator",
+  "version": "1.0.0",
+  "description": "Create cards with associated face properties",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EddiEsteban/card-generator.git"
+  },
+  "author": "Doug, Saqueeb, Eddi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EddiEsteban/card-generator/issues"
+  },
+  "homepage": "https://github.com/EddiEsteban/card-generator#readme",
+  "devDependencies": {
+    "eslint": "^7.3.1"
+  }
+}
