@@ -39,7 +39,7 @@ if (process.env.JAWSDB_URL){
         password: process.env.DB_PWD,
         database: process.env.DB_NAME,
         insecureAuth : true
-    })
+    });
 }
 
 module.exports = db
