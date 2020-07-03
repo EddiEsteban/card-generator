@@ -85,5 +85,5 @@ function deleteTask( id ){
 */
 
 module.exports = {
-    getCard, getName, getImgLocation, 
+    getCard, getName, getImgLocation, getDescription, setAttributes, saveCard, addDeck, deleteCard, addCard
 }
