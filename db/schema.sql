@@ -17,8 +17,7 @@ CREATE TABLE cards(
     `img` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     `deck_id` INT,
-    `main_attribute` VARCHAR(255) NOT NULL,
-    `other_attributes` JSON,
+    `attributes` JSON,
     `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id)
 );

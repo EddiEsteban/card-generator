@@ -4,6 +4,8 @@ function getList( criteria={} ){
     return db.query( 'SELECT * FROM cards '+( criteria ? 'WHERE ? ' : '' ), criteria )
 }
 
+
+
 function insertTask( priority, info, due ){
     if( priority === '' ) {
         priority = 'primary'

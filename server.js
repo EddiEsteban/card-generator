@@ -1,5 +1,6 @@
 require('dotenv').config()      // loads confirmation information from the .env file
 const express = require("express")
+const router = require("./app/router");
 
 const app = express()
 
@@ -13,9 +14,8 @@ app.use(express.json())
 
 
 // enter routing here *******
+router(app)
 
-
-// have to move this under the routesController after getting handlebars working
 app.use( express.static('public') )
 
 
