@@ -31,36 +31,41 @@ function showCardForm(event){
     cardFormEl.style.display = 'inline'
 }
 
+async function showAllCards(){
+    return await apiCall('/cards')
+}
+
+async function getCard(){
+    let id
+    return await apiCall(`/cards/${id}`)
+}
+
+async function editCard(){
+    let cardEl = document.querySelector('#')
+    let id = cardEl.dataset.id
+    return await apiCall(`/api/cards/${id}`, 'put', data)
+}
+
+async function createCard(event){
+    event.preventDefault()
+    let nameInputEl = document.querySelector('#cardNameInput')
+    let imgInputEl = document.querySelector('#cardImgInput')
+    let descInputEl = document.querySelector('#cardDescInput')
+
+    let data = {
+        name: nameInputEl.value,
+        img: imgInputEl.value,
+        description: descInputEl.value
+    }
+
+    return await apiCall('/api/cards', 'post', data)
+}
+
+async function deleteCard(){
+    return await apiCall(`/api/cards/${id}`, 'delete')
+}
+
 async function mainApp(){
-
-    async function editCard(){
-        let cardEl = document.querySelector('#')
-        let id = cardEl.dataset.id
-        return await apiCall(`/card/${id}`, 'put', data)
-    }
-
-    async function createCard(){
-        event.preventDefault()
-        let nameInputEl = document.querySelector('#cardNameInput')
-        let imgInputEl = document.querySelector('#cardImgInput')
-        let descInputEl = document.querySelector('#cardDescInput')
-
-        let data = {
-            name: nameInputEl.value,
-            img: imgInputEl.value,
-            description: descInputEl.value
-        }
-
-        return await apiCall('/', 'post', data)
-    }
-
-    async function deleteCard(){
-        return await apiCall(`/card/${id}`, 'delete')
-    }
-
-    async function showAllCards(){
-        return await apiCall('/')
-    }
-
+    return
 }
 mainApp()

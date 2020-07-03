@@ -1,4 +1,5 @@
 require('dotenv').config()      // loads confirmation information from the .env file
+const orm = require('./app/orm')
 const express = require("express")
 const router = require("./app/router");
 
@@ -18,6 +19,8 @@ router(app)
 
 app.use( express.static('public') )
 
+
+orm.getList()
 
 // Start the server so that it can begin listening to client requests.
 app.listen(PORT, function () {

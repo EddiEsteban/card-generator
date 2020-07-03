@@ -6,17 +6,34 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Card Generator</title>
 </head>
-<body>
-    <div class="jumbotron">
+<body onLoad='mainApp()'>
+    <div class="jumbotron" style='margin-top:5%' id='jumboIntro'>
         <h1 class="display-4">Card Generator</h1>
         <p class="lead">Create cards with their own face properties. Prepare decks of cards sharing these properties.</p>
         <hr class="my-4">
         <p>Create cards in a new deck or update cards of an existing deck.</p>
-        <a class="btn btn-primary btn-lg" href="./generator.html" role="button">Create cards</a>
-        <a class="btn btn-primary btn-lg" href="./generator.html" role="button">Update cards</a>
+        <a class="btn btn-primary btn-lg" onClick='showCardForm(event)' role="button">Create cards</a>
+        <a class="btn btn-primary btn-lg" onClick="showCardList(event)" role="button">Update cards</a>
     </div>
     <div class='container'>
-        
+        <div style='display:none' id='cardForm'>
+            <form>
+                <div class='form-group'>
+                    <label for='cardNameInput'>Name of card</label>
+                    <input type='text' name='cardNameInput' id='cardNameInput' class='form-control'>
+                </div>
+                <div class='form-group'>
+                    <label for='cardImgInput'>Card art</label>
+                    <input type='url' name='cardImgInput' id='cardImgInput' class='form-control'>
+                </div>
+                <div class='form-group'>
+                    <label for='cardDescInput'>Description</label>
+                    <input type='text' name='cardDescInput' id='cardDescInput' class='form-control'>
+                </div>
+                <button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>
+            </form>
+        </div>
+    </div>
     </div>
     <script>
         
