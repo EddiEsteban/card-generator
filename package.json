@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon server.js",
+    "dbinit": "mysql -uroot -p < db/schema.sql",
+    "dbinitdata": "mysql -uroot -p < db/seeds.sql" 
   },
   "repository": {
     "type": "git",
