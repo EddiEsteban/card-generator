@@ -19,8 +19,16 @@ router(app)
 
 app.use( express.static('public') )
 
+/***** TESTING *****/
+async function test(res, req){
+    let card = await orm.getCard({name:'Charizard'}) // just to test db connection
+    console.log(`Get card: `, card)
+    let cardName = await orm.getName(1) // just to test db connection
+    console.log('Got card name', cardName)
+}
+test()
+/***** TESTING *****/
 
-orm.getName(1) // just to test db connection
 
 // Start the server so that it can begin listening to client requests.
 app.listen(PORT, function () {

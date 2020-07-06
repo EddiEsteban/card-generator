@@ -1,6 +1,15 @@
 const db = require('./connection')
 
 function getCard( criteria={} ){
+    // return new Promise( (resolve, reject) => {
+    //     db.query( 'SELECT * FROM cards '+ criteria ? 'WHERE ? ' : '', criteria , (err, res) => {
+    //         if (err) {
+    //             reject(new Error(err))
+    //             // throw err
+    //         }
+    //         resolve(res);
+    //     });
+    // })
     return db.query( 'SELECT * FROM cards '+( criteria ? 'WHERE ? ' : '' ), criteria )
 }
 
