@@ -27,7 +27,7 @@ async function apiCall( url, method='get', data={} ){
 
 function showCardForm(event){
     event.preventDefault()
-    let cardFormEl = document.querySelector('#cardForm')
+    let cardFormEl = document.querySelector('#createCardBlock')
     cardFormEl.style.display = 'inline'
 }
 
@@ -68,4 +68,5 @@ async function deleteCard(){
 async function mainApp(){
     return
 }
+
 mainApp()

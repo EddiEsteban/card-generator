@@ -1,7 +1,22 @@
 require('dotenv').config() // loads confirmation information from the .env file
-const orm = require('./app/orm') // just to test db connection
 const express = require('express')
-const router = require('./app/router');
+const router = require('./config/router');
+const exphbs = require('express-handlebars');
+
+const hbs = exphbs.create({
+    helpers: {
+        block: function(name){
+            var blocks = this._blocks;
+            content = blocks && blocks[name];
+            return content ? content.join('\n') : null;
+        },
+        contentFor: function(name, options){
+            var blocks = this._blocks || (this._blocks = {});
+            block = blocks[name] || (blocks[name] = []); //Changed this to [] instead of {}
+            block.push(options.fn(this));
+        }
+    }
+});
 
 const app = express()
 
@@ -13,6 +28,9 @@ const PORT = process.env.PORT || 8080
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+// handlebar boilerplate
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
 // enter routing here *******
 router(app)

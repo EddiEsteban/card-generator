@@ -1,6 +1,11 @@
 const orm = require('./orm');
 
 function router( app ){
+
+    app.get('/', async (req, res)=>{
+        res.render('index', {example: 'hello'})
+    })
+
     app.get('/api/cards/:due?', async function(req, res) {
         const due = req.params.due ? { due: req.params.due } : ''
         console.log( `[GET] getting list, due=${due}`)
