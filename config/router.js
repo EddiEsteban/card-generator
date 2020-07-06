@@ -3,7 +3,7 @@ const orm = require('./orm');
 function router( app ){
 
     app.get('/', async (req, res)=>{
-        res.render('cardForm', {example: 'hello'})
+        res.render('index', {example: 'hello'})
     })
 
     app.get('/api/cards/:due?', async function(req, res) {

@@ -18,29 +18,9 @@
     </div>
     <div class='container'>
         <div style='display:none' id='createCardBlock'>
-            <div >
-                <form>
-                    <div class='form-group'>
-                        <label for='cardNameInput'>Name of card</label>
-                        <input type='text' name='cardNameInput' id='cardNameInput' class='form-control'>
-                    </div>
-                    <div class='form-group'>
-                        <label for='cardImgInput'>Card art</label>
-                        <input type='url' name='cardImgInput' id='cardImgInput' class='form-control'>
-                    </div>
-                    <div class='form-group'>
-                        <label for='cardDescInput'>Description</label>
-                        <input type='text' name='cardDescInput' id='cardDescInput' class='form-control'>
-                    </div>
-                    <button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>
-                </form>
-            </div>
+            {{{block 'cardForm'}}}
         </div>
-        {{{body}}}
+        {{{block 'example'}}}
     </div>
-    
-    <script>
-        
-    </script>
 </body>
 </html>
