@@ -1,7 +1,7 @@
-require('dotenv').config()      // loads confirmation information from the .env file
+require('dotenv').config() // loads confirmation information from the .env file
 const orm = require('./app/orm') // just to test db connection
-const express = require("express")
-const router = require("./app/router");
+const express = require('express')
+const router = require('./app/router');
 
 const app = express()
 
@@ -25,5 +25,5 @@ orm.getName(1) // just to test db connection
 // Start the server so that it can begin listening to client requests.
 app.listen(PORT, function () {
     // Log (server-side) when the server has started
-    console.log("Server listening on: http://localhost:" + PORT)
+    console.log('Server listening on: http://localhost:' + PORT)
 })
