@@ -18,19 +18,23 @@ function getDescription( id ){
 }
 
 function setAttributes( id, attributes={} ){
+    console.log( ' setting attributes: ', id, attributes )
     // may need to tweak this due to JSON
     return db.query( 'UPDATE cards SET attributes=? WHERE id=? ', [attributes, id] )
 }
 
 function saveCard( id, name, desc, location, deckId, attributes ){
+    console.log( ' saving card: ', id )
     return db.query( 'UPDATE cards SET ? WHERE id=? ', [{ name, desc, location, deckId, attributes }, id ] )
 }
 
 function addDeck( name ){
+    console.log( ' creating card: ', name )
     return db.query( 'INSERT INTO decks (name) VALUES (?)', [ name ] )
 }
 
 function deleteCard( id ){
+    console.log( ' deleting card: ', id )
     return db.query( 'DELETE FROM cards WHERE id=?', [ id ] )
 }
 
