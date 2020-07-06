@@ -68,4 +68,5 @@ async function deleteCard(){
 async function mainApp(){
     return
 }
+
 mainApp()
