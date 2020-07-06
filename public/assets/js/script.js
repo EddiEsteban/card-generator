@@ -10,6 +10,24 @@ class Card {
     }
 }
 
+function previewMatch(id) {
+    let previewId = id.slice(0,-5)+'Preview'
+    console.log(previewId)
+    let field = document.querySelector(`#${id}`).value;
+    document.querySelector(`#${previewId}`).innerHTML = field
+}
+
+function userInputGenerator(){
+    let attribute = `<label for='a'>Attribute name</label><input type='text' name='a' id='a' class='form-control' onInput='previewMatch(id)'>`
+    let value = `<label for='b' >Value</label><input type='text' name='b' id='b' class='form-control' onInput='previewMatch(id)>'`
+    return `<div class='form-row mb-2'><div class='col-md-3'>${attribute}</div><div class='col-md-9'>${value}</div></div>`
+}
+
+function addAttribute(){
+    let attributesListEl = document.querySelector('#attributesInputList')
+    attributesListEl.innerHTML += userInputGenerator()
+}
+
 async function apiCall( url, method='get', data={} ){
     let settings = {
         method,
@@ -28,7 +46,7 @@ async function apiCall( url, method='get', data={} ){
 function showCardForm(event){
     event.preventDefault()
     let cardFormEl = document.querySelector('#createCardBlock')
-    cardFormEl.style.display = 'inline'
+    cardFormEl.style.display = 'flex'
 }
 
 async function showAllCards(){
