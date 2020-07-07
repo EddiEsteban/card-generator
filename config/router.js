@@ -34,11 +34,21 @@ function router( app ){
         if( !req.body.id ) {
             res.status(404).send( { message: 'Invalid id' } )
         }
-        const saveResult = await orm.saveCard( req.body.name, req.body.desc, req.body.location, req.body.deckId, req.body.attributes )
+        const saveResult = await orm.saveCard( req.body.id, req.body.name, req.body.desc, req.body.location, req.body.deckId, req.body.attributes )
         console.log( '... ', saveResult )
-        res.send( { status: true, message: 'Card Updated successfully' } )
-    })
 
+        if (saveResult.affectedRows === 0){
+            postMsg = "Card doesn't exist"
+            console.log('[PUT] saveDeck: ', postMsg)
+            res.send( { status: false, message: postMsg } )
+        } else {
+            postMsg = 'Card Updated successfully'
+            console.log('[PUT] saveDeck: ', postMsg)
+            res.send( { status: true, message: postMsg } )
+        }
+
+    })
+    /*
     // addCardAttributes
     app.post('/api/cards/attributes', async function(req, res) {
         console.log( '[PUT] we received this data:', req.body )
@@ -49,6 +59,7 @@ function router( app ){
         console.log( '... ', saveResult )
         res.send( { status: true, message: 'Card Updated successfully' } )
     })
+    */
 
     // addDeck
     app.post('/api/decks', async function(req, res) {
@@ -76,7 +87,7 @@ function router( app ){
         const saveResult = await orm.saveDeck( req.body.deckId, req.body.deckName )
         console.log( '... ', saveResult )
         let postMsg = ''
-        if (saveResult.fieldCount === 0){
+        if (saveResult.affectedRows === 0){
             postMsg = "Deck doesn't exist"
             console.log('[PUT] saveDeck: ', postMsg)
             res.send( { status: false, message: postMsg } )

@@ -14,8 +14,8 @@ CREATE TABLE decks(
 CREATE TABLE cards(
 	`id` INT AUTO_INCREMENT NOT NULL,
     `name` VARCHAR(255) NOT NULL,
-    `img` VARCHAR(255) NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
+    `img` VARCHAR(255),
+    `description` VARCHAR(255),
     `deck_id` INT,
     `attributes` JSON,
     `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

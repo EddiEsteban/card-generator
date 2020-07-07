@@ -18,12 +18,14 @@ function getCardDesc( id ){
     return db.query( 'SELECT description FROM cards WHERE id=? ', [ id ] )
 }
 
+/*
 function setCardAttributes( id, attributes={} ){
     console.log( ' setting attributes: ', id, attributes )
     console.log('stringify: ', JSON.stringify(attributes))
     // may need to tweak this due to JSON
     return db.query( 'UPDATE cards SET attributes=? WHERE id=? ', [JSON.stringify(attributes), id] )
 }
+*/
 
 function addCard( name, desc, location, deckId, attributes ){
     console.log( 'inserting card data: ', name, desc, location, deckId, attributes )
@@ -36,7 +38,9 @@ function addCard( name, desc, location, deckId, attributes ){
 
 function saveCard( id, name, desc, location, deckId, attributes ){
     console.log( ' saving card: ', id )
-    return db.query( 'UPDATE cards SET ? WHERE id=? ', [{ name, desc, location, deckId, attributes }, id ] )
+    const queryString = `UPDATE cards SET name='${name}', description='${desc}', img='${location}', deck_id=${deckId}, attributes='${JSON.stringify(attributes)}' WHERE id=${id}`
+    // console.log(queryString)
+    return db.query( queryString )
 }
 
 function deleteCard( id ){
@@ -56,6 +60,7 @@ function deleteDeck( id ){
 
 function saveDeck( id, name ){
     console.log( ' updating deck: ', name )
+    console.log( ' updating deck: ', id )
     return db.query( 'UPDATE decks SET ? WHERE id=? ', [{ name }, id ] )
 }
 
@@ -80,5 +85,5 @@ deleteAttribute
 */
 
 module.exports = {
-    getCard, getCardName, getCardLocation, getCardDesc, setCardAttributes, saveCard, addDeck, deleteCard, addCard, deleteDeck, saveDeck
+    getCard, getCardName, getCardLocation, getCardDesc, saveCard, addDeck, deleteCard, addCard, deleteDeck, saveDeck
 }
