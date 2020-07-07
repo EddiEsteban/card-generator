@@ -47,9 +47,13 @@ function deleteCard( id ){
     return db.query( 'DELETE FROM cards WHERE id=?', [ id ] )
 }
 
-function addCard( name, desc, location, deckId, attributes){
-    console.log( ' inserting card data: ', { name, desc, location, deckId, attributes } )
-    return db.query( 'INSERT INTO cards (name, desc, location, deck_id, attributes) VALUES (?,?,?,?,?)', [name, desc, location, deckId, attributes])
+function addCard( name, desc, location, deckId, attributes ){
+    console.log( 'inserting card data: ', name, desc, location, deckId, attributes )
+    // return db.query( 'INSERT INTO cards (name, img, desc, deck_id, attributes) VALUES (?,?,?,?,?)', [name, location, desc, deckId, JSON.stringify(attributes)])
+    const queryString = `INSERT INTO cards (name, img, description, deck_id, attributes) VALUES ('${name}','${location}','${desc}',${deckId},'${JSON.stringify(attributes)}')`
+    // console.log(queryString)
+    return db.query( queryString)
+    // return db.query( `INSERT INTO cards (name, img, desc, deck_id, attributes) VALUES ('${name}','${location}','${desc}',${deckId},'${jsonData}')`)
 }
 
 /*
