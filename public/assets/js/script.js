@@ -10,6 +10,13 @@ class Card {
     }
 }
 
+function clearCreationForms(){
+    document.querySelector('#cardNameInput').value = ''
+    document.querySelector('#cardDescInput').value = ''
+    document.querySelector('#cardImgInput').value = ''
+    document.querySelector('#cardAttrInputList').innerHTML = ''
+}
+
 function previewMatch(id) {
     let previewId = id.slice(0,-5)+'Preview'
     let field = document.querySelector(`#${id}`).value;
@@ -52,7 +59,7 @@ async function apiCall( url, method='get', data={} ){
 function showCardForm(event){
     event.preventDefault()
     let cardFormEl = document.querySelector('#createCardBlock')
-    cardFormEl.style.display = 'flex'
+    cardFormEl.classList.remove('d-none')
 }
 
 async function showAllCards(){
@@ -96,6 +103,8 @@ async function createCard(event){
         attributes
     }
 
+    clearCreationForms()
+
     return await apiCall('/api/cards', 'post', data)
 }
 
@@ -103,8 +112,31 @@ async function deleteCard(){
     return await apiCall(`/api/cards/${id}`, 'delete')
 }
 
+function toggleMediaUpload( selectType='imageFile' ){
+    console.log( '[toggleMediaUpload] this', selectType )
+
+    if( selectType==='imageFile' ){
+        document.querySelector('#imageUrl').classList.add('d-none');
+        document.querySelector('#imageFile').classList.remove('d-none');
+        document.querySelector('#imageSizeCol').classList.remove('d-none');
+    } else {
+        document.querySelector('#imageUrl').classList.remove('d-none');
+        document.querySelector('#imageFile').classList.add('d-none');
+        document.querySelector('#imageSizeCol').classList.add('d-none');
+    }
+}
+
+function previewImg(event){
+    let output = document.getElementById('cardImgPreview');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+    }
+}
+
 async function mainApp(){
-    return
+    toggleMediaUpload()
 }
 
 mainApp()
+
