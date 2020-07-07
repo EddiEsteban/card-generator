@@ -1,4 +1,6 @@
 const db = require('./connection')
+const fs = require( 'fs' )
+const dbFile = './medialist.data'
 
 function getCard( criteria={} ){
     console.log('getting card: ', criteria)
@@ -84,6 +86,21 @@ deleteAttribute
 
 */
 
+function getMedia(){
+    console.log( `[getMedia] ${__dirname}` )
+    if( !fs.existsSync( dbFile) ){
+        return []
+    }
+
+    // split by the new-lines
+    mediaList = fs.readFileSync( dbFile, 'utf8' ).split('\n')
+    return mediaList
+}
+
+function saveMedia( mediaData ){
+    fs.appendFileSync( dbFile, `${mediaData.imageUrl}\n` )
+}
+
 module.exports = {
-    getCard, getCardName, getCardLocation, getCardDesc, saveCard, addDeck, deleteCard, addCard, deleteDeck, saveDeck
+    getCard, getCardName, getCardLocation, getCardDesc, saveCard, addDeck, deleteCard, addCard, deleteDeck, saveDeck, getMedia, saveMedia
 }
