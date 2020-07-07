@@ -39,6 +39,17 @@ function router( app ){
         res.send( { status: true, message: 'Card Updated successfully' } )
     })
 
+    // addCardAttributes
+    app.post('/api/cards/attributes', async function(req, res) {
+        console.log( '[PUT] we received this data:', req.body )
+        if( !req.body.id ) {
+            res.status(404).send( { message: 'Invalid id' } )
+        }
+        const saveResult = await orm.setCardAttributes( req.body.id, req.body.attributes )
+        console.log( '... ', saveResult )
+        res.send( { status: true, message: 'Card Updated successfully' } )
+    })
+
     // addDeck
     app.post('/api/decks', async function(req, res) {
         console.log( '[POST] we received this data:', req.body.name )
@@ -64,7 +75,17 @@ function router( app ){
         }
         const saveResult = await orm.saveDeck( req.body.deckId, req.body.deckName )
         console.log( '... ', saveResult )
-        res.send( { status: true, message: 'Deck Updated successfully' } )
+        let postMsg = ''
+        if (saveResult.fieldCount === 0){
+            postMsg = "Deck doesn't exist"
+            console.log('[PUT] saveDeck: ', postMsg)
+            res.send( { status: false, message: postMsg } )
+        } else {
+            postMsg = 'Deck Updated successfully'
+            console.log('[PUT] saveDeck: ', postMsg)
+            res.send( { status: true, message: postMsg } )
+        }
+
     })
 
 }
