@@ -14,8 +14,8 @@
             <input type='url' name='cardImgInput' id='cardImgInput' class='form-control'>
         </div>
         <div class='form-group'>
-            <label for='attributesInput'>Attributes</label>
-            <div id='attributesInputList'></div>
+            <label for='cardAttrInputList'>Attributes</label>
+            <div id='cardAttrInputList'></div>
             <button type="button" class='btn btn-primary mt-3' onClick='addAttribute()'>Add attribute</button>
         </div>
         <button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>
@@ -30,16 +30,6 @@
     <h5 class="card-title card-body" id='cardNamePreview'>Card title</h5>
   <img src="./assets/img/The Challengers.png" class="card-img-top img-fluid" id='cardImgPreview' alt="example image">
   <p class="card-text card-body" id='cardDescPreview'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  <ul class="list-group list-group-flush">
-    {{#each attribute}}
-    <li class="list-group-item">Cras justo odio</li>
-    <li class="list-group-item">Dapibus ac facilisis in</li>
-    <li class="list-group-item">Vestibulum at eros</li>
-    {{/each}}
-  </ul>
-  <div class="card-body">
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
-  </div>
+  <ul class="list-group list-group-flush" id='cardAttrListPreview'></ul>
 </div>
 {{/contentFor}}

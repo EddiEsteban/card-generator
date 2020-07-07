@@ -12,21 +12,27 @@ class Card {
 
 function previewMatch(id) {
     let previewId = id.slice(0,-5)+'Preview'
-    console.log(previewId)
     let field = document.querySelector(`#${id}`).value;
     document.querySelector(`#${previewId}`).innerHTML = field
 }
 
+let attrEnum = 0
 function userInputGenerator(){
-    let attribute = `<label for='a'>Attribute name</label><input type='text' name='a' id='a' class='form-control' onInput='previewMatch(id)'>`
-    let value = `<label for='b' >Value</label><input type='text' name='b' id='b' class='form-control' onInput='previewMatch(id)>'`
-    return `<div class='form-row mb-2'><div class='col-md-3'>${attribute}</div><div class='col-md-9'>${value}</div></div>`
+    let attr = `<label for='attr${attrEnum}Input'>Attribute name</label><input type='text' name='attr${attrEnum}Input' id='attr${attrEnum}Input' class='form-control' onInput='previewMatch(id)'>`
+    let val = `<label for='val${attrEnum}Input'>Value</label><input type='text' name='val${attrEnum}Input' id='val${attrEnum}Input' class='form-control' onInput='previewMatch(id)'>`
+    return `<div class='form-row mb-2'><div class='col-md-3'>${attr}</div><div class='col-md-9'>${val}</div></div>`
 }
 
+
 function addAttribute(){
-    let attributesListEl = document.querySelector('#attributesInputList')
-    attributesListEl.innerHTML += userInputGenerator()
+    let attrListEl = document.querySelector('#cardAttrInputList')
+    let previewAttrEl = document.querySelector('#cardAttrListPreview')
+    attrListEl.innerHTML += userInputGenerator()
+    previewAttrEl.innerHTML += `<li class='list-group-item'><div class='row'><div class='col' id='attr${attrEnum}Preview'></div><div class='col' id='val${attrEnum}Preview'></div></div></li>`
+    attrEnum +=1
 }
+
+// api requests below
 
 async function apiCall( url, method='get', data={} ){
     let settings = {
@@ -69,11 +75,25 @@ async function createCard(event){
     let nameInputEl = document.querySelector('#cardNameInput')
     let imgInputEl = document.querySelector('#cardImgInput')
     let descInputEl = document.querySelector('#cardDescInput')
-
+    let attrInputListEl = document.querySelector('#cardAttrInputList').children
+    let attributes = []
+    console.log(attrInputListEl)
+    for (let i=0; i < attrInputListEl.length; i++){
+        console.log(i)
+        attributes.push(
+            {
+                attr: attrInputListEl[i].children[0].children[1].value,
+                val: attrInputListEl[i].children[1].children[1].value
+            }
+        )
+    }
+    console.log(attrInputListEl[1].children[0].children[1].value)
+    console.log(attributes)
     let data = {
         name: nameInputEl.value,
         img: imgInputEl.value,
-        description: descInputEl.value
+        description: descInputEl.value,
+        attributes
     }
 
     return await apiCall('/api/cards', 'post', data)
