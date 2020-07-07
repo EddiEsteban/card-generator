@@ -1,30 +1,29 @@
-const mysql = require('mysql');
-// an external npm package we are using
-const moment = require('moment')
+const mysql = require('mysql')
 
 class Database {
     constructor( config ) {
-        this.connection = mysql.createConnection( config );
+        this.connection = mysql.createConnection( config )
+        console.log('Connected to the database')
     }
     query( sql, args ) {
         return new Promise( ( resolve, reject ) => {
             this.connection.query( sql, args, ( err, rows ) => {
                 if ( err ) {
-                    return reject( err );
+                    return reject( err )
                 }
-                resolve( rows );
-            } );
-        } );
+                resolve( rows )
+            } )
+        } )
     }
     close() {
         return new Promise( ( resolve, reject ) => {
             this.connection.end( err => {
                 if ( err ) {
-                    return reject( err );
+                    return reject( err )
                 }
-                resolve();
-            } );
-        } );
+                resolve()
+            } )
+        } )
     }
 }
 
@@ -43,4 +42,4 @@ if (process.env.JAWSDB_URL){
     });
 }
 
-module.exports(db)
+module.exports = db
