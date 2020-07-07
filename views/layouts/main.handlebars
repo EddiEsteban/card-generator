@@ -15,10 +15,10 @@
         <hr class="my-4">
         <p>Create cards in a new deck or update cards of an existing deck.</p>
         <a class="btn btn-primary btn-lg" onClick='showCardForm(event)' role="button">Create cards</a>
-        <a class="btn btn-primary btn-lg" onClick="showCardList(event)" role="button">Update cards</a>
+        <a class="btn btn-primary btn-lg" onClick="showCardList(event)" role="button">View cards</a>
     </div>
     <div class='container'>
-        <div class='row' id='createCardBlock' style='display:none'>
+        <div class='row d-none' id='createCardBlock'>
             <div class='col-md-6 col-lg-8' id='createCardForm'>
                 {{{block 'createCardForm'}}}
             </div>
