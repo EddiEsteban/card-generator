@@ -6,15 +6,15 @@ const upload = require('multer')({ dest: UPLOAD_PATH })
 const publicPath = '../'
 function router( app ){
 
-    app.get('/', async (req, res)=>{
-        res.render('index', {ex: 'hello'})
-    })
+    // app.get('/', async (req, res)=>{
+    //     res.render('index', {ex: 'hello'})
+    // })
 
     app.get('/api/cards', async (req, res)=>{
         console.log('[GET] getting all cards')
         let cards = await orm.getCards()
         console.log(cards)
-        res.render('index', {cards})
+        res.send(cards)
     })
 
     app.get('/api/cards/:search?', async function(req, res) {

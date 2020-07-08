@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src='./assets/js/script.js'></script>
+    <link rel='stylesheet' type='text/css' href='./assets/css/style.css'>
+    <title>Card Generator</title>
+</head>
+<body onLoad='mainApp()'>
+    <div class="jumbotron" style='margin-top:5%' id='jumboIntro'>
+        <h1 class="display-4">Card Generator</h1>
+        <p class="lead">Create cards with their own face properties. Prepare decks of cards sharing these properties.</p>
+        <hr class="my-4">
+        <p>Create cards in a new deck or update cards of an existing deck.</p>
+        <a class="btn btn-primary btn-lg" onClick='showCardForm(event)' role="button">Create cards</a>
+    </div>
+    <div class='container'>
+        <div class='row d-none' id='createCardBlock'>
+            <div class='col-md-6 col-lg-8' id='createCardForm'>
+                <form>
+                    <div class='form-group'>
+                        <label for='cardNameInput'>Name of card</label>
+                        <input type='text' name='cardNameInput' id='cardNameInput' class='form-control' onInput='previewMatch(id)'>
+                    </div>
+                    <div class='form-group'>
+                        <label for='cardDescInput'>Description</label>
+                        <input type='text' name='cardDescInput' id='cardDescInput' class='form-control' onInput='previewMatch(id)'>
+                    </div>
+                    
+                    <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST"></form>
+                        <div class="form-group">
+                            <label for='imageUrl'>Card art</label>
+                            <div class='row'>
+                                <div class='col-6'>
+                                <select onChange='toggleMediaUpload(this.value)' id="imageType" name='imageType' class='form-control'>
+                                    <option value="imageFile">Upload image</option>
+                                    <option value="imageUrl">Image URL</option>
+                                </select>
+                                </div>
+                                <!-- this column only appears when it's an actual file upload for resizing -->
+                                <div id='imageSizeCol' class='col-6 d-none'>
+                                <select id="imageSize" name='imageSize' class='form-control'>
+                                    <option value="0x0">.. Resize ..</option>
+                                    <option value="256x256">Thumbnail</option>
+                                    <option value="1024x1024">Normal</option>
+                                    <option value="5000x5000">Jumbo</option>
+                                </select>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" id="imageUrl" name='imageUrl'>
+                            <input type="file" id="imageFile" name='imageFile' onChange='previewImg(event)' accept="image/*" class='form-control d-none'>
+                        </div>
+                    </form>
+                    <div id='apiMessage' class="alert alert-success d-none"></div>
+                    <button onClick="uploadMedia(event)" class="btn btn-primary submit">Upload</button>
+
+                    <div class='form-group'>
+                        <label for='cardAttrInputList'>Attributes</label>
+                        <div id='cardAttrInputList'></div>
+                        <button type="button" class='btn btn-primary mt-3' onClick='addAttribute()'>Add attribute</button>
+                    </div>
+                    <button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>
+                </form>
+            </div>
+            <div class='col-md-6 col-lg-4' id='cardPreviewBlock'>
+            <div class="card" >
+                <h5 class="card-title card-body" id='cardNamePreview'>Card title</h5>
+            <img src="./assets/img/The Challengers.png" class="card-img-top img-fluid" id='cardImgPreview' alt="example image">
+            <p class="card-text card-body" id='cardDescPreview'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <ul class="list-group list-group-flush" id='cardAttrListPreview'></ul>
+            </div>
+            </div>
+        </div>
+        <div class='row d-none' id='editCardBlock'>
+            <div class='col-md-6 col-lg-8' id='createCardForm'>
+                <!-- {{{block 'editCardForm'}}} -->
+            </div>
+            <div class='col-md-6 col-lg-4' id='cardPreviewBlock'>
+                <!-- {{{block 'cardPreview'}}} -->
+            </div>
+        </div>
+        <div class='row' id='cardListBlock'>
+            <!-- {{{block 'cardList'}}} -->
+        </div>
+        <!-- {{{block 'example'}}} -->
+    </div>
+</body>
+</html>
