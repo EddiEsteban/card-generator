@@ -143,9 +143,17 @@ function router( app ){
 
     })
 
+    // get specific deck
+    app.get('/api/decks/:id', async function(req, res) {
+        console.log( `[GET] getting deck, id=${req.params.id}`)
+        const list = await orm.getDeck( id=req.params.id )
+
+        res.send( list )
+    })
+    // get ALL Decks
     app.get('/api/decks', async (req, res)=>{
         console.log('[GET] getting all decks')
-        let decks = await orm.getDecks()
+        let decks = await orm.getDeckswithImg()
         console.log(decks)
         res.send(decks)
     })

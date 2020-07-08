@@ -70,9 +70,20 @@ function saveDeck( id, name ){
     return db.query( 'UPDATE decks SET ? WHERE id=? ', [{ name }, id ] )
 }
 
+function getDeck( id ){
+    return db.query( 'SELECT * FROM decks WHERE id=? ', id )
+}
+
 async function getDecks(){
     return await db.query('SELECT * FROM decks')
 }
+
+async function getDeckswithImg(){
+    let queryString = 'select distinct d.id, d.name, c.img from decks d, cards c where d.id=c.deck_id '+
+    'union select d.id, d.name, "assets/img/blank_deck.jpg" from decks d, cards c where d.id!=c.deck_id'
+    return await db.query(queryString)
+}
+
 
 /*
 status
@@ -123,7 +134,9 @@ module.exports = {
     addCard,
     deleteDeck,
     saveDeck,
+    getDeck,
     getDecks,
+    getDeckswithImg,
     getMedia,
     saveMedia
 }

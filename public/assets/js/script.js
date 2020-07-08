@@ -46,6 +46,7 @@ function addAttribute(){
     let attrListEl = document.querySelector('#cardAttrInputList')
     let previewAttrEl = document.querySelector('#cardAttrListPreview')
     attrListEl.innerHTML += userInputGenerator()
+    console.log('attrListEl: ', attrListEl)
     previewAttrEl.innerHTML += `<li class='list-group-item'><div class='row'><div class='col' id='attr${attrEnum}Preview'></div><div class='col' id='val${attrEnum}Preview'></div></div></li>`
     attrEnum +=1
 }
@@ -172,7 +173,36 @@ async function deleteCard(event){
 }
 
 
+let deckThumbnail = (deck)=>{
+    return `<div class="card col-4 col-sm-3 col-md-2">`+
+        `<img src="${deck.img}" class="card-img-top img-fluid" alt="...">`+
+        `<div class="card-body">`+
+        `<h5 class="card-title">${deck.name}</h5>`+
+        `</div></div>`
+}
 
+async function showAllDecks(){
+    let decks = await apiCall('/api/decks')
+    let deckListEl = document.querySelector('#deckListBlock')
+    decks.forEach(deck=>{
+        deckListEl.innerHTML += deckThumbnail(deck)
+    })
+}
+
+async function getDeck(){
+    let id
+    return await apiCall(`/decks/${id}`)
+}
+
+async function editDeck(){
+    let deckEl = document.querySelector('#')
+    let id = deckEl.dataset.id
+    return await apiCall(`/api/decks/${id}`, 'put', data)
+}
+
+async function deleteDeck(){
+    return await apiCall(`/api/decks/${id}`, 'delete')
+}
 
 function previewImg(event){
     let output = document.getElementById('cardImgPreview');
@@ -182,9 +212,44 @@ function previewImg(event){
     }
 }
 
+async function mediaList( id ){
+    const getRequest = await apiCall( '/api/media' )
+    console.log( '[mediaList] ', getRequest )
+
+    if( getRequest.status ){
+        const mediaListEl = document.querySelector( '#mediaList' )
+        mediaListEl.innerHTML = ''
+
+        getRequest.mediaList.forEach( function( mediaUrl ){
+            mediaListEl.innerHTML += `
+            <img src='${mediaUrl}' class='img-thumbnail' width=100>
+            `
+        })
+    }
+
+}
+
+// save the new form
+async function uploadMedia( event ){
+    event.preventDefault()
+
+    //* because we are using the built-in browser form-builder, we need valid
+    //! **name** attributes - for ease we give same values as the id's
+    const uploadResponse = await apiCall( '/api/media', 'post', '#mediaForm' )
+    console.log( '[uploadResponse] ', uploadResponse )
+
+    if( uploadResponse.status ){
+        // clear the data
+        document.querySelector('#imageUrl').value = ''
+        document.querySelector('#imageFile').value = ''
+
+        // refresh the list
+        mediaList()
+    }
+}
 
 async function mainApp(){
     await showAllCards()
 
+    await showAllDecks()
 }
-
