@@ -10,11 +10,24 @@ class Card {
     }
 }
 
-function clearCreationForms(){
+let attrEnum
+
+function clearCardForm(){
     document.querySelector('#cardNameInput').value = ''
     document.querySelector('#cardDescInput').value = ''
     document.querySelector('#cardImgInput').value = ''
     document.querySelector('#cardAttrInputList').innerHTML = ''
+}
+
+function fillCardForm(card){
+    document.querySelector('#cardNameInput').value = card.name
+    document.querySelector('#cardDescInput').value = card.description
+    // document.querySelector('#cardImgInput').value = card.img
+    console.log(card)
+    card.attributes.forEach(
+        document.querySelector('#cardAttrInputList').innerHTML += userInputGenerator()
+    )
+    
 }
 
 function previewMatch(id) {
@@ -23,7 +36,6 @@ function previewMatch(id) {
     document.querySelector(`#${previewId}`).innerHTML = field
 }
 
-let attrEnum = 0
 function userInputGenerator(){
     let attr = `<label for='attr${attrEnum}Input'>Attribute name</label><input type='text' name='attr${attrEnum}Input' id='attr${attrEnum}Input' class='form-control' onInput='previewMatch(id)'>`
     let val = `<label for='val${attrEnum}Input'>Value</label><input type='text' name='val${attrEnum}Input' id='val${attrEnum}Input' class='form-control' onInput='previewMatch(id)'>`
@@ -57,16 +69,25 @@ async function apiCall( url, method='get', data={} ){
 }
 
 function showCardForm(event){
+    attrEnum = 0
     event.preventDefault()
-    let cardFormEl = document.querySelector('#createCardBlock')
+    let crudButton = document.querySelector('#crudButtons')
+    console.log(event.target.id)
+    if (event.target.id == 'createCardInit'){
+        crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>`
+    } else {
+        crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editCard(event)'>Edit card</button>`
+    }
+    let cardFormEl = document.querySelector('#cardFormBlock')
     cardFormEl.classList.remove('d-none')
 }
 
 let cardThumbnail = (card)=>{
-    return `<div class="card col-4 col-sm-3 col-md-2">`+
+    return `<div class="card col-4 col-sm-3 col-md-2" data-card-id='${card.id}'>`+
         `<img src="${card.img}" class="card-img-top img-fluid" alt="...">`+
         `<div class="card-body">`+
-        `<h5 class="card-title">${card.name}</h5>`+
+        `<h6 class="card-title">${card.name}</h6>`+
+        `<button class='btn btn-secondary' onClick='getCard(event)'>Edit</button>`+
         `</div></div>`
 }
 
@@ -78,15 +99,22 @@ async function showAllCards(){
     })
 }
 
-async function getCard(){
-    let id
-    return await apiCall(`/cards/${id}`)
+async function getCard(event){
+    event.preventDefault()
+    console.log(event.target.parentNode.parentNode)
+    let cardEl = event.target.parentNode.parentNode
+    let id = cardEl.dataset.cardId
+    let card = await apiCall(`/api/cards/${id}`)
+    fillCardForm(card)
+    showCardForm(event)
 }
 
-async function editCard(){
-    let cardEl = document.querySelector('#')
-    let id = cardEl.dataset.id
-    return await apiCall(`/api/cards/${id}`, 'put', data)
+async function editCard(event){
+    event.preventDefault()
+    console.log(event.target.parentNode.parentNode)
+    let cardEl = event.target.parentNode.parentNode
+    let id = cardEl.dataset.cardId
+    // return await apiCall(`/api/cards/${id}`, 'put', data)
 }
 
 async function createCard(event){
@@ -115,7 +143,7 @@ async function createCard(event){
         attributes
     }
 
-    clearCreationForms()
+    clearCardForm()
 
     return await apiCall('/api/cards', 'post', data)
 }
