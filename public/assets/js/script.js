@@ -211,6 +211,41 @@ function previewImg(event){
     }
 }
 
+async function mediaList( id ){
+    const getRequest = await apiCall( '/api/media' )
+    console.log( '[mediaList] ', getRequest )
+
+    if( getRequest.status ){
+        const mediaListEl = document.querySelector( '#mediaList' )
+        mediaListEl.innerHTML = ''
+
+        getRequest.mediaList.forEach( function( mediaUrl ){
+            mediaListEl.innerHTML += `
+            <img src='${mediaUrl}' class='img-thumbnail' width=100>
+            `
+        })
+    }
+
+}
+
+// save the new form
+async function uploadMedia( event ){
+    event.preventDefault()
+
+    //* because we are using the built-in browser form-builder, we need valid
+    //! **name** attributes - for ease we give same values as the id's
+    const uploadResponse = await apiCall( '/api/media', 'post', '#mediaForm' )
+    console.log( '[uploadResponse] ', uploadResponse )
+
+    if( uploadResponse.status ){
+        // clear the data
+        document.querySelector('#imageUrl').value = ''
+        document.querySelector('#imageFile').value = ''
+
+        // refresh the list
+        mediaList()
+    }
+}
 
 async function mainApp(){
     await showAllCards()
