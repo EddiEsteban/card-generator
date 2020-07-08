@@ -2,9 +2,8 @@ const db = require('./connection')
 const fs = require( 'fs' )
 const dbFile = './medialist.data'
 
-function getCard( criteria={} ){
-    console.log('getting card: ', criteria)
-    return db.query( 'SELECT * FROM cards '+( criteria ? 'WHERE ? ' : '' ), criteria )
+function getCard( id ){
+    return db.query( 'SELECT * FROM cards WHERE id=?', id )
 }
 
 async function getCards(){
@@ -70,6 +69,10 @@ function saveDeck( id, name ){
     return db.query( 'UPDATE decks SET ? WHERE id=? ', [{ name }, id ] )
 }
 
+function getDeck( id ){
+    return db.query( 'SELECT * FROM decks WHERE id=? ', id )
+}
+
 async function getDecks(){
     return await db.query('SELECT * FROM decks')
 }
@@ -123,6 +126,7 @@ module.exports = {
     addCard,
     deleteDeck,
     saveDeck,
+    getDeck,
     getDecks,
     getMedia,
     saveMedia

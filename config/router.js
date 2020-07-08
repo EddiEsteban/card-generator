@@ -17,10 +17,9 @@ function router( app ){
         res.send(cards)
     })
 
-    app.get('/api/cards/:search?', async function(req, res) {
-        // const search = req.params.search ? { due: req.params.due } : ''
-        console.log( `[GET] getting list, search=${req.params.search}`)
-        const list = await orm.getCard( req.params.search )
+    app.get('/api/cards/:id', async function(req, res) {
+        console.log( `[GET] getting card, id=${req.params.id}`)
+        const list = await orm.getCard( req.params.id )
 
         res.send( list )
     })
@@ -110,6 +109,14 @@ function router( app ){
 
     })
 
+    // get specific deck
+    app.get('/api/decks/:id', async function(req, res) {
+        console.log( `[GET] getting deck, id=${req.params.id}`)
+        const list = await orm.getDeck( id=req.params.id )
+
+        res.send( list )
+    })
+    // get ALL Decks
     app.get('/api/decks', async (req, res)=>{
         console.log('[GET] getting all decks')
         let decks = await orm.getDecks()

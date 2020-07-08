@@ -124,6 +124,40 @@ async function deleteCard(){
     return await apiCall(`/api/cards/${id}`, 'delete')
 }
 
+
+let deckThumbnail = (deck)=>{
+    return `<div class="card col-4 col-sm-3 col-md-2">`+
+        `<img src="${deck.img}" class="card-img-top img-fluid" alt="...">`+
+        `<div class="card-body">`+
+        `<h5 class="card-title">${deck.name}</h5>`+
+        `</div></div>`
+}
+
+async function showAllDecks(){
+    let decks = await apiCall('/api/decks')
+    let deckListEl = document.querySelector('#deckListBlock')
+    decks.forEach(deck=>{
+        deckListEl.innerHTML += deckThumbnail(deck)
+    })
+}
+
+async function getDeck(){
+    let id
+    return await apiCall(`/decks/${id}`)
+}
+
+async function editDeck(){
+    let deckEl = document.querySelector('#')
+    let id = deckEl.dataset.id
+    return await apiCall(`/api/decks/${id}`, 'put', data)
+}
+
+async function deleteDeck(){
+    return await apiCall(`/api/decks/${id}`, 'delete')
+}
+
+
+
 function toggleMediaUpload( selectType='imageFile' ){
     console.log( '[toggleMediaUpload] this', selectType )
 
@@ -152,5 +186,6 @@ function previewImg(event){
 async function mainApp(){
     await showAllCards()
     toggleMediaUpload()
+    await showAllDecks()
 }
 
