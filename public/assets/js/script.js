@@ -47,6 +47,7 @@ function addAttribute(){
     let attrListEl = document.querySelector('#cardAttrInputList')
     let previewAttrEl = document.querySelector('#cardAttrListPreview')
     attrListEl.innerHTML += userInputGenerator()
+    console.log('attrListEl: ', attrListEl)
     previewAttrEl.innerHTML += `<li class='list-group-item'><div class='row'><div class='col' id='attr${attrEnum}Preview'></div><div class='col' id='val${attrEnum}Preview'></div></div></li>`
     attrEnum +=1
 }

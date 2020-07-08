@@ -78,6 +78,13 @@ async function getDecks(){
     return await db.query('SELECT * FROM decks')
 }
 
+async function getDeckswithImg(){
+    let queryString = 'select distinct d.id, d.name, c.img from decks d, cards c where d.id=c.deck_id '+
+    'union select d.id, d.name, "assets/img/blank_deck.jpg" from decks d, cards c where d.id!=c.deck_id'
+    return await db.query(queryString)
+}
+
+
 /*
 status
 getName - done
@@ -129,6 +136,7 @@ module.exports = {
     saveDeck,
     getDeck,
     getDecks,
+    getDeckswithImg,
     getMedia,
     saveMedia
 }
