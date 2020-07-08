@@ -62,12 +62,19 @@ function showCardForm(event){
     cardFormEl.classList.remove('d-none')
 }
 
+let cardThumbnail = (card)=>{
+    return `<div class="card col-2">`+
+        `<img src="${card.img}" class="card-img-top img-fluid" alt="...">`+
+        `<div class="card-body">`+
+        `<h5 class="card-title">${card.name}</h5>`+
+        `</div></div>`
+}
 
 async function showAllCards(){
     let cards = await apiCall('/api/cards')
     let cardListEl = document.querySelector('#cardListBlock')
     cards.forEach(card=>{
-        cardListEl.innerHTML += `<div class='col-2'>${card.name}</div>`
+        cardListEl.innerHTML += cardThumbnail(card)
     })
 }
 

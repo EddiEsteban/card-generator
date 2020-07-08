@@ -8,7 +8,7 @@ INSERT INTO decks (name) VALUES ("Classic");
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "Ace of Spades",
     NULL,
-    "assets/img/The Challengers",
+    "assets/img/The Challengers.png",
     1,
     '[
         {"attr": "Suite", "val": "Spade"},
@@ -17,7 +17,7 @@ INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "Ace of Clubs",
     NULL,
-    "assets/img/The Challengers",
+    "assets/img/The Challengers.png",
     1,
     '[
         {"attr": "Suite", "val": "Club"},
@@ -26,7 +26,7 @@ INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "Ace of Hearts",
     NULL,
-    "assets/img/The Challengers",
+    "assets/img/The Challengers.png",
     1,
     '[
         {"attr": "Suite", "val": "Heart"},
@@ -35,7 +35,7 @@ INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "Ace of Diamonds",
     NULL,
-    "assets/img/The Challengers",
+    "assets/img/The Challengers.png",
     1,
     '[
         {"attr": "Suite", "val": "Diamond"},
@@ -45,7 +45,7 @@ INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "The Challengers",
     "Second project team",
-    "assets/img/The Challengers",
+    "assets/img/The Challengers.png",
     NULL,
     '[
         {"attr": "Members", "val": "3"},
