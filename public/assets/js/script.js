@@ -15,7 +15,7 @@ let attrEnum
 function clearCardForm(){
     document.querySelector('#cardNameInput').value = ''
     document.querySelector('#cardDescInput').value = ''
-    document.querySelector('#cardImgInput').value = ''
+    // document.querySelector('#cardImgInput').value = ''
     document.querySelector('#cardAttrInputList').innerHTML = ''
 }
 
@@ -23,11 +23,10 @@ function fillCardForm(card){
     document.querySelector('#cardNameInput').value = card.name
     document.querySelector('#cardDescInput').value = card.description
     // document.querySelector('#cardImgInput').value = card.img
-    console.log(card)
-    card.attributes.forEach(
-        document.querySelector('#cardAttrInputList').innerHTML += userInputGenerator()
-    )
-    
+    console.log(card.attributes)
+    card.attributes.forEach((attrval)=>{
+        document.querySelector('#cardAttrInputList').innerHTML += userInputGenerator(attrval)
+    })
 }
 
 function previewMatch(id) {
@@ -36,10 +35,10 @@ function previewMatch(id) {
     document.querySelector(`#${previewId}`).innerHTML = field
 }
 
-function userInputGenerator(){
-    let attr = `<label for='attr${attrEnum}Input'>Attribute name</label><input type='text' name='attr${attrEnum}Input' id='attr${attrEnum}Input' class='form-control' onInput='previewMatch(id)'>`
-    let val = `<label for='val${attrEnum}Input'>Value</label><input type='text' name='val${attrEnum}Input' id='val${attrEnum}Input' class='form-control' onInput='previewMatch(id)'>`
-    return `<div class='form-row mb-2'><div class='col-md-3'>${attr}</div><div class='col-md-9'>${val}</div></div>`
+function userInputGenerator(attrval={attr: '', val: ''}){
+    let attrHTML = `<label for='attr${attrEnum}Input'>Attribute name</label><input type='text' name='attr${attrEnum}Input' id='attr${attrEnum}Input' class='form-control' onInput='previewMatch(id)' value=${attrval.attr}>`
+    let valHTML = `<label for='val${attrEnum}Input'>Value</label><textarea name='val${attrEnum}Input' id='val${attrEnum}Input' class='form-control' onInput='previewMatch(id)'>${attrval.val}</textarea>`
+    return `<div class='form-row mb-2' id='attrval${attrEnum}'><div class='col-md-6 col-lg-4'>${attrHTML}</div><div class='col-md-6 col-md-8'>${valHTML}</div></div>`
 }
 
 
@@ -72,11 +71,12 @@ async function apiCall( url, method='get', data={} ){
 function showCardForm(event){
     attrEnum = 0
     event.preventDefault()
+    clearCardForm()
     let crudButton = document.querySelector('#crudButtons')
     console.log(event.target.id)
     if (event.target.id == 'createCardInit'){
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>`
-    } else {
+    } else if (event.target.classList.contains('editBtn')){
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editCard(event)'>Edit card</button>`
     }
     let cardFormEl = document.querySelector('#cardFormBlock')
@@ -88,7 +88,7 @@ let cardThumbnail = (card)=>{
         `<img src="${card.img}" class="card-img-top img-fluid" alt="...">`+
         `<div class="card-body">`+
         `<h6 class="card-title">${card.name}</h6>`+
-        `<button class='btn btn-secondary' onClick='getCard(event)'>Edit</button>`+
+        `<button class='btn btn-secondary editBtn' onClick='getCard(event)'>Edit</button>`+
         `</div></div>`
 }
 
@@ -106,8 +106,8 @@ async function getCard(event){
     let cardEl = event.target.parentNode.parentNode
     let id = cardEl.dataset.cardId
     let card = await apiCall(`/api/cards/${id}`)
-    fillCardForm(card)
     showCardForm(event)
+    fillCardForm(card)
 }
 
 async function editCard(event){

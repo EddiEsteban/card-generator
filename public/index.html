@@ -20,17 +20,17 @@
             <div class='col-md-6 col-lg-8' id='cardForm'>
                 <form>
                     <div class='form-group'>
-                        <label for='cardNameInput'>Name of card</label>
+                        <label for='cardNameInput'><h5>Name of card</h5></label>
                         <input type='text' name='cardNameInput' id='cardNameInput' class='form-control' onInput='previewMatch(id)'>
                     </div>
                     <div class='form-group'>
-                        <label for='cardDescInput'>Description</label>
-                        <input type='text' name='cardDescInput' id='cardDescInput' class='form-control' onInput='previewMatch(id)'>
+                        <label for='cardDescInput'><h5>Description</h5></label>
+                        <textarea name='cardDescInput' id='cardDescInput' class='form-control' onInput='previewMatch(id)'></textarea>
                     </div>
                     
                     <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST"></form>
                         <div class="form-group">
-                            <label for='imageUrl'>Card art</label>
+                            <label for='imageUrl'><h5>Card art</h5></label>
                             <div class='row'>
                                 <div class='col-6'>
                                 <select onChange='toggleMediaUpload(this.value)' id="imageType" name='imageType' class='form-control'>
@@ -56,7 +56,7 @@
                     <button onClick="uploadMedia(event)" class="btn btn-primary submit">Upload</button>
 
                     <div class='form-group'>
-                        <label for='cardAttrInputList'>Attributes</label>
+                        <label for='cardAttrInputList'><h5>Attributes</h5></label>
                         <div id='cardAttrInputList'></div>
                         <button type="button" class='btn btn-primary mt-3' onClick='addAttribute()'>Add attribute</button>
                     </div>
