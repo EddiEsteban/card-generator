@@ -62,8 +62,15 @@ function showCardForm(event){
     cardFormEl.classList.remove('d-none')
 }
 
+function showCardList(event){
+    event.preventDefault()
+    let cardFormEl = document.querySelector('#cardListBlock')
+    cardFormEl.classList.remove('d-none')
+}
+
+
 async function showAllCards(){
-    return await apiCall('/cards')
+    return await apiCall('/api/cards')
 }
 
 async function getCard(){
@@ -126,6 +133,8 @@ function toggleMediaUpload( selectType='imageFile' ){
     }
 }
 
+
+
 function previewImg(event){
     let output = document.getElementById('cardImgPreview');
     output.src = URL.createObjectURL(event.target.files[0]);
@@ -133,6 +142,7 @@ function previewImg(event){
         URL.revokeObjectURL(output.src) // free memory
     }
 }
+
 
 async function mainApp(){
     toggleMediaUpload()

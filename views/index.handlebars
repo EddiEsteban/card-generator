@@ -47,7 +47,11 @@
 </div>
 {{/contentFor}}
 {{#contentFor 'cardList'}}
-<h1>Hello world!</h1>
+{{#each cards}}
+<div>
+{{card}}
+</div>
+{{/each}}
 {{/contentFor}}
 {{#contentFor 'cardPreview'}}
 <div class="card" >
