@@ -70,6 +70,10 @@ function saveDeck( id, name ){
     return db.query( 'UPDATE decks SET ? WHERE id=? ', [{ name }, id ] )
 }
 
+async function getDecks(){
+    return await db.query('SELECT * FROM decks')
+}
+
 /*
 status
 getName - done
@@ -87,6 +91,8 @@ editCard
 deleteCard - done
 
 deleteAttribute
+
+getDecks
 
 */
 
@@ -116,5 +122,8 @@ module.exports = {
     deleteCard,
     addCard,
     deleteDeck,
-    saveDeck
+    saveDeck,
+    getDecks,
+    getMedia,
+    saveMedia
 }

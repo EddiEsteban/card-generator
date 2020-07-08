@@ -108,38 +108,45 @@ function router( app ){
             res.send( { status: true, message: postMsg } )
         }
 
-        // media upload looks for a picture file called 'imageFile'
-        app.post( '/api/media', upload.single('imageFile'), async function( req, res ){
-            // console.log( '[api/media] POST ', req.body, req.file )
+    })
 
-            let mediaData = req.body
-            // if they uploaded a file, let's add it to the thumbData
-            if( req.file ){
-                const [ resizeWidth, resizeHeight ] = mediaData.imageSize.split('x')
-                const imageUrl = await uploadResizer(publicPath+req.file.path, req.file.originalname, resizeWidth, resizeHeight);
-                // assign in the thumbData so can use as normal
-                mediaData.imageUrl = imageUrl
-                mediaData.name = req.file.originalname
-            }
-            console.log( '[POST api/thumbnails] received'+(req.file ? `; attached file @ ${mediaData.imageSize}`:''), mediaData );
+    app.get('/api/decks', async (req, res)=>{
+        console.log('[GET] getting all decks')
+        let decks = await orm.getDecks()
+        console.log(decks)
+        res.send(decks)
+    })
 
-            if( mediaData.imageUrl==='' ) {
-                // we can't save this picturegram without an image so abort
-                res.send( { error: `Sorry problem uploading ${mediaData.name}` } )
-            }
+    // media upload looks for a picture file called 'imageFile'
+    app.post( '/api/media', upload.single('imageFile'), async function( req, res ){
+        // console.log( '[api/media] POST ', req.body, req.file )
 
-            // save this
-            await orm.saveMedia( mediaData )
+        let mediaData = req.body
+        // if they uploaded a file, let's add it to the thumbData
+        if( req.file ){
+            const [ resizeWidth, resizeHeight ] = mediaData.imageSize.split('x')
+            const imageUrl = await uploadResizer(publicPath+req.file.path, req.file.originalname, resizeWidth, resizeHeight);
+            // assign in the thumbData so can use as normal
+            mediaData.imageUrl = imageUrl
+            mediaData.name = req.file.originalname
+        }
+        console.log( '[POST api/thumbnails] received'+(req.file ? `; attached file @ ${mediaData.imageSize}`:''), mediaData );
 
-            res.send( { status: true, mediaData, message: `Image saved: ${mediaData.name}` } )
-        })
+        if( mediaData.imageUrl==='' ) {
+            // we can't save this picturegram without an image so abort
+            res.send( { error: `Sorry problem uploading ${mediaData.name}` } )
+        }
 
-        app.get( '/api/media', async function( req, res ){
-            console.log( '[api/media] getting the list' )
-            const mediaList = await orm.getMedia()
-            res.send( { status: true, mediaList } )
-        })
+        // save this
+        await orm.saveMedia( mediaData )
 
+        res.send( { status: true, mediaData, message: `Image saved: ${mediaData.name}` } )
+    })
+
+    app.get( '/api/media', async function( req, res ){
+        console.log( '[api/media] getting the list' )
+        const mediaList = await orm.getMedia()
+        res.send( { status: true, mediaList } )
     })
 
 }
