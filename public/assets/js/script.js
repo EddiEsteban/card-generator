@@ -63,7 +63,7 @@ function showCardForm(event){
 }
 
 let cardThumbnail = (card)=>{
-    return `<div class="card col-2">`+
+    return `<div class="card col-4 col-sm-3 col-md-2">`+
         `<img src="${card.img}" class="card-img-top img-fluid" alt="...">`+
         `<div class="card-body">`+
         `<h5 class="card-title">${card.name}</h5>`+
