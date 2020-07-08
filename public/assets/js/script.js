@@ -67,8 +67,7 @@ async function showAllCards(){
     let cards = await apiCall('/api/cards')
     let cardListEl = document.querySelector('#cardListBlock')
     cards.forEach(card=>{
-        console.log(card.name)
-        cardListEl.innerHTML += `<div class='col-2'>Name: ${card.name}</div>`
+        cardListEl.innerHTML += `<div class='col-2'>${card.name}</div>`
     })
 }
 
