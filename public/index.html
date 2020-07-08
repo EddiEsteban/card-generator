@@ -18,7 +18,7 @@
     <div class='container'>
         <div class='row d-none' id='cardFormBlock'>
             <div class='col-md-6 col-lg-8' id='cardForm'>
-                <form>
+                <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST">
                     <div class='form-group'>
                         <label for='cardNameInput'><h5>Name of card</h5></label>
                         <input type='text' name='cardNameInput' id='cardNameInput' class='form-control' onInput='previewMatch(id)'>
@@ -28,32 +28,13 @@
                         <textarea name='cardDescInput' id='cardDescInput' class='form-control' onInput='previewMatch(id)'></textarea>
                     </div>
                     
-                    <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST"></form>
+                    
                         <div class="form-group">
                             <label for='imageUrl'><h5>Card art</h5></label>
-                            <div class='row'>
-                                <div class='col-6'>
-                                <select onChange='toggleMediaUpload(this.value)' id="imageType" name='imageType' class='form-control'>
-                                    <option value="imageFile">Upload image</option>
-                                    <option value="imageUrl">Image URL</option>
-                                </select>
-                                </div>
-                                <!-- this column only appears when it's an actual file upload for resizing -->
-                                <div id='imageSizeCol' class='col-6 d-none'>
-                                <select id="imageSize" name='imageSize' class='form-control'>
-                                    <option value="0x0">.. Resize ..</option>
-                                    <option value="256x256">Thumbnail</option>
-                                    <option value="1024x1024">Normal</option>
-                                    <option value="5000x5000">Jumbo</option>
-                                </select>
-                                </div>
-                            </div>
-                            <input type="text" class="form-control" id="imageUrl" name='imageUrl'>
-                            <input type="file" id="imageFile" name='imageFile' onChange='previewImg(event)' accept="image/*" class='form-control d-none'>
+                            <input type="file" id="imageFile" name='imageFile' name='imageFile' onChange='previewImg(event)' accept="image/*" class='form-control'>
                         </div>
-                    </form>
+                    
                     <div id='apiMessage' class="alert alert-success d-none"></div>
-                    <button onClick="uploadMedia(event)" class="btn btn-primary submit">Upload</button>
 
                     <div class='form-group'>
                         <label for='cardAttrInputList'><h5>Attributes</h5></label>

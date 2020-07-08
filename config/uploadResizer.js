@@ -25,7 +25,7 @@ async function uploadResizer( filePath, originalName, resizeWidth=0, resizeHeigh
     }
 
     // everything after the public directory; ie its relative path in the browser
-    return filePathWithExt.split('/public/')[1];
+    return filePathWithExt.replace(/\\/g,'/').split('public/')[1];
 }
 
 module.exports = uploadResizer;
