@@ -98,13 +98,15 @@ let cardThumbnail = (card)=>{
         `<img src="${card.img}" class="card-img-top img-fluid" alt="...">`+
         `<div class="card-body">`+
         `<h6 class="card-title">${card.name}</h6>`+
-        `<button class='btn btn-secondary editBtn' onClick='getCard(event)'>Edit</button>`+
+        `<button class='btn btn-secondary editBtn' onClick='getCard(event)'>📝</button>`+
+        `<button class='btn btn-danger delBtn' onClick='deleteCard(event)'>🗑</button>`+
         `</div></div>`
 }
 
 async function showAllCards(){
     let cards = await apiCall('/api/cards')
     let cardListEl = document.querySelector('#cardListBlock')
+    cardListEl.innerHTML = ''
     cards.forEach(card=>{
         cardListEl.innerHTML += cardThumbnail(card)
     })
@@ -155,14 +157,18 @@ async function createCard(event){
     // }
 
     let result = await apiCall('/api/cards', 'post', '#mediaForm')
-    
     clearCardForm()
-
+    showAllCards()
     return result
 }
 
-async function deleteCard(){
-    return await apiCall(`/api/cards/${id}`, 'delete')
+async function deleteCard(event){
+    event.preventDefault()
+    let cardEl = event.target.parentNode.parentNode
+    let id = cardEl.dataset.cardId
+    let result = await apiCall(`/api/cards/${id}`, 'delete')
+    showAllCards()
+    return result
 }
 
 
