@@ -10,6 +10,11 @@ function router( app ){
         res.render('index', {example: 'hello'})
     })
 
+    app.get('/api/cards', async (req, res)=>{
+        console.log(`[GET] getting all cards ${req}`)
+        const list = await orm.getCards(req)
+    })
+
     app.get('/api/cards/:search?', async function(req, res) {
         // const search = req.params.search ? { due: req.params.due } : ''
         console.log( `[GET] getting list, search=${req.params.search}`)

@@ -7,6 +7,10 @@ function getCard( criteria={} ){
     return db.query( 'SELECT * FROM cards '+( criteria ? 'WHERE ? ' : '' ), criteria )
 }
 
+function getCards(){
+    return db.query('SELECT * FROM cards')
+}
+
 function getCardName( id ){
     console.log('getting card name')
     return db.query( 'SELECT name FROM cards WHERE id=? ', id )
@@ -102,5 +106,15 @@ function saveMedia( mediaData ){
 }
 
 module.exports = {
-    getCard, getCardName, getCardLocation, getCardDesc, saveCard, addDeck, deleteCard, addCard, deleteDeck, saveDeck, getMedia, saveMedia
+    getCard,
+    getCards,
+    getCardName,
+    getCardLocation,
+    getCardDesc,
+    saveCard,
+    addDeck,
+    deleteCard,
+    addCard,
+    deleteDeck,
+    saveDeck
 }
