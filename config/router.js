@@ -28,9 +28,39 @@ function router( app ){
         res.send( list )
     })
     // addCard
-    app.post('/api/cards', async function(req, res) {
-        console.log( '[POST] we received this data:', req.body.name, req.body.desc, req.body.location, req.body.deckId, req.body.attributes )
-        const saveResult = await orm.addCard( req.body.name, req.body.desc, req.body.location, req.body.deckId, req.body.attributes )
+    app.post('/api/cards', upload.single('imageFile'), async function(req, res) {
+        let cardData = req.body
+        console.log(cardData)
+        // if they uploaded a file, let's add it to the thumbData
+        let imageUrl = './assets/img/The Challengers.png'
+        if( req.file ){
+            
+            imageUrl = await uploadResizer('../'+req.file.path, req.file.originalname, 512, 512);
+            // imageUrl = `uploads/${req.file.filename}`
+            console.log('image processed ', imageUrl, req.file)
+        }
+
+        console.log( '[POST] we received this data:', req.body.cardNameInput, req.body.cardNameDesc, imageUrl, null, req.body.attributes )
+
+        
+        let attributes = {}
+        let i = 0
+    
+        let validAttr = true
+        while( validAttr ){
+             const attrName = req.body[`attr${i}Input`]
+             const attrVal = req.body[`val${i}Input`]
+             if( attrName ){
+                  attributes[attrName] = attrVal
+             } else {
+                 validAttr = false
+             }
+             i++
+        }
+
+
+        console.log(`attributes: `, attributes)
+        const saveResult = await orm.addCard( req.body.cardNameInput, req.body.cardDescInput, imageUrl, null, attributes )
         console.log( `... insertId: ${saveResult.insertId} ` )
         res.send( { status: true, insertId: saveResult.insertId, message: 'Card inserted successfully' } )
     })
@@ -128,31 +158,6 @@ function router( app ){
         res.send(decks)
     })
 
-    // media upload looks for a picture file called 'imageFile'
-    app.post( '/api/media', upload.single('imageFile'), async function( req, res ){
-        // console.log( '[api/media] POST ', req.body, req.file )
-
-        let mediaData = req.body
-        // if they uploaded a file, let's add it to the thumbData
-        if( req.file ){
-            const [ resizeWidth, resizeHeight ] = mediaData.imageSize.split('x')
-            const imageUrl = await uploadResizer(publicPath+req.file.path, req.file.originalname, resizeWidth, resizeHeight);
-            // assign in the thumbData so can use as normal
-            mediaData.imageUrl = imageUrl
-            mediaData.name = req.file.originalname
-        }
-        console.log( '[POST api/thumbnails] received'+(req.file ? `; attached file @ ${mediaData.imageSize}`:''), mediaData );
-
-        if( mediaData.imageUrl==='' ) {
-            // we can't save this picturegram without an image so abort
-            res.send( { error: `Sorry problem uploading ${mediaData.name}` } )
-        }
-
-        // save this
-        await orm.saveMedia( mediaData )
-
-        res.send( { status: true, mediaData, message: `Image saved: ${mediaData.name}` } )
-    })
 
     app.get( '/api/media', async function( req, res ){
         console.log( '[api/media] getting the list' )

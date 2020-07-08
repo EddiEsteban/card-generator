@@ -54,17 +54,28 @@ function addAttribute(){
 // api requests below
 
 async function apiCall( url, method='get', data={} ){
-    let settings = {
-        method,
-        headers: { 'Content-Type': 'application/json' }
+    method = method.toLowerCase()
+    let settings = { method }
+
+    // for formData we must NOT set content-type, let system do it
+    const isFormData = (typeof data)==='string'
+    if( !isFormData ) {
+        settings.headers = { 'Content-Type': 'application/json' }
     }
+
     // only attach the body for put/post
     if( method === 'post' || method === 'put' ) {
-        settings.body = JSON.stringify( data )
+        if( isFormData ){
+            //* gather form data (esp. if attached media)
+            //! each entry to be attached must have a valid **name** attribute
+            settings.body = new FormData( document.querySelector(`${data}`) )
+        } else {
+            settings.body = JSON.stringify( data )
+        }
     }
 
     const result = await fetch( url,settings ).then( res=>res.json() )
-    console.log(result)
+
     return result
 }
 
@@ -120,33 +131,35 @@ async function editCard(event){
 
 async function createCard(event){
     event.preventDefault()
-    let nameInputEl = document.querySelector('#cardNameInput')
-    let imgInputEl = document.querySelector('#cardImgInput')
-    let descInputEl = document.querySelector('#cardDescInput')
-    let attrInputListEl = document.querySelector('#cardAttrInputList').children
-    let attributes = []
-    console.log(attrInputListEl)
-    for (let i=0; i < attrInputListEl.length; i++){
-        console.log(i)
-        attributes.push(
-            {
-                attr: attrInputListEl[i].children[0].children[1].value,
-                val: attrInputListEl[i].children[1].children[1].value
-            }
-        )
-    }
-    console.log(attrInputListEl[1].children[0].children[1].value)
-    console.log(attributes)
-    let data = {
-        name: nameInputEl.value,
-        img: imgInputEl.value,
-        description: descInputEl.value,
-        attributes
-    }
+    // let nameInputEl = document.querySelector('#cardNameInput')
+    // let imgInputEl = document.querySelector('#cardImgInput')
+    // let descInputEl = document.querySelector('#cardDescInput')
+    // let attrInputListEl = document.querySelector('#cardAttrInputList').children
+    // let attributes = []
+    // console.log(attrInputListEl)
+    // for (let i=0; i < attrInputListEl.length; i++){
+    //     console.log(i)
+    //     attributes.push(
+    //         {
+    //             attr: attrInputListEl[i].children[0].children[1].value,
+    //             val: attrInputListEl[i].children[1].children[1].value
+    //         }
+    //     )
+    // }
+    // console.log(attrInputListEl[1].children[0].children[1].value)
+    // console.log(attributes)
+    // let data = {
+    //     name: nameInputEl.value,
+    //     img: imgInputEl.value,
+    //     description: descInputEl.value,
+    //     attributes
+    // }
 
+    let result = await apiCall('/api/cards', 'post', '#mediaForm')
+    
     clearCardForm()
 
-    return await apiCall('/api/cards', 'post', data)
+    return result
 }
 
 async function deleteCard(){
@@ -184,24 +197,6 @@ async function editDeck(){
 async function deleteDeck(){
     return await apiCall(`/api/decks/${id}`, 'delete')
 }
-
-
-
-function toggleMediaUpload( selectType='imageFile' ){
-    console.log( '[toggleMediaUpload] this', selectType )
-
-    if( selectType==='imageFile' ){
-        document.querySelector('#imageUrl').classList.add('d-none');
-        document.querySelector('#imageFile').classList.remove('d-none');
-        document.querySelector('#imageSizeCol').classList.remove('d-none');
-    } else {
-        document.querySelector('#imageUrl').classList.remove('d-none');
-        document.querySelector('#imageFile').classList.add('d-none');
-        document.querySelector('#imageSizeCol').classList.add('d-none');
-    }
-}
-
-
 
 function previewImg(event){
     let output = document.getElementById('cardImgPreview');
@@ -249,7 +244,6 @@ async function uploadMedia( event ){
 
 async function mainApp(){
     await showAllCards()
-    toggleMediaUpload()
+
     await showAllDecks()
 }
-
