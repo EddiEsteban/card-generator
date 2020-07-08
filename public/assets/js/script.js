@@ -52,19 +52,13 @@ async function apiCall( url, method='get', data={} ){
     }
 
     const result = await fetch( url,settings ).then( res=>res.json() )
-
+    console.log(result)
     return result
 }
 
 function showCardForm(event){
     event.preventDefault()
     let cardFormEl = document.querySelector('#createCardBlock')
-    cardFormEl.classList.remove('d-none')
-}
-
-function showCardList(event){
-    event.preventDefault()
-    let cardFormEl = document.querySelector('#cardListBlock')
     cardFormEl.classList.remove('d-none')
 }
 
@@ -145,6 +139,7 @@ function previewImg(event){
 
 
 async function mainApp(){
+    await showAllCards()
     toggleMediaUpload()
 }
 

@@ -7,8 +7,8 @@ function getCard( criteria={} ){
     return db.query( 'SELECT * FROM cards '+( criteria ? 'WHERE ? ' : '' ), criteria )
 }
 
-function getCards(){
-    return db.query('SELECT * FROM cards')
+async function getCards(){
+    return await db.query('SELECT * FROM cards')
 }
 
 function getCardName( id ){
