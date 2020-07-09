@@ -26,6 +26,8 @@ function fillCardForm(card){
     }
     previewMatch('cardNameInput')
     previewMatch('cardDescInput')
+    let imgEl = document.querySelector('#cardImgPreview');
+    imgEl.src = card.img
 }
 
 function previewMatch(id) {
@@ -92,14 +94,12 @@ function showCardForm(event){
     let crudButton = document.querySelector('#crudButtons')
     if (event.target.id == 'createCardInit'){
         document.querySelector('#cardId').value = 'default'
+        document.querySelector('#cardImgUrl').value = 'default'
         document.querySelector('#mediaForm').setAttribute('method', 'POST')
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>`
     } else if (event.target.classList.contains('editBtn')){
         document.querySelector('#mediaForm').setAttribute('method', 'PUT')
-        let fieldIds = ['cardNameInput', 'cardDescInput']
-        fieldIds.forEach((id)=>{
-            previewMatch(id)
-        })
+        
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editCard(event)'>Edit card</button>`
     }
     let cardFormEl = document.querySelector('#cardFormBlock')
@@ -107,7 +107,7 @@ function showCardForm(event){
 }
 
 let cardThumbnail = (card)=>{
-    return `<div class="card col-4 col-sm-3 col-md-2" data-card-id='${card.id}'>`+
+    return `<div class="card col-4 col-sm-3 col-md-2" data-card-id='${card.id}' data-card-img-url='${card.img}'>`+
         `<img src="${card.img}" class="card-img-top img-fluid" alt="...">`+
         `<div class="card-body">`+
         `<h6 class="card-title">${card.name}</h6>`+
@@ -139,13 +139,13 @@ async function getCard(event){
     event.preventDefault()
     let cardEl = event.target.parentNode.parentNode
     let id = cardEl.dataset.cardId
-    document.querySelector('#cardId').value = id
+    let img = cardEl.dataset.cardImgUrl
+    document.querySelector('#cardId').setAttribute('value', id)
+    document.querySelector('#cardImgUrl').setAttribute('value', img)
     let card = await apiCall(`/api/cards/${id}`)
     showCardForm(event)
     clearCardForm()
     fillCardForm(card)
-    
-
 }
 
 async function editCard(event){

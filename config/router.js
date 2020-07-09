@@ -82,7 +82,7 @@ function router( app ){
         let cardData = req.body
         console.log('PUT cardData: ', cardData)
         // if they uploaded a file, let's add it to the thumbData
-        let imageUrl = './assets/img/The Challengers.png'
+        let imageUrl = cardData.cardImgUrl
         if( req.file ){
             imageUrl = await uploadResizer('../'+req.file.path, req.file.originalname, 512, 512);
             // imageUrl = `uploads/${req.file.filename}`
