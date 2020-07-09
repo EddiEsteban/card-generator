@@ -2,8 +2,5 @@ node_modules/
 package-lock.json
 .env
 eddi/
-<<<<<<< HEAD
-.DS_Store
-=======
 public/uploads/*
->>>>>>> master
+cryptic-oasis-49000/
