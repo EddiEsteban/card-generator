@@ -23,10 +23,13 @@ function fillCardForm(card){
     document.querySelector('#cardNameInput').value = card.name
     document.querySelector('#cardDescInput').value = card.description
     // document.querySelector('#cardImgInput').value = card.img
-    console.log(card.attributes)
-    card.attributes.forEach((attrval)=>{
-        document.querySelector('#cardAttrInputList').innerHTML += userInputGenerator(attrval)
-    })
+    console.log('card attributes: ', card.attributes)
+    if (card.attributes){
+        card.attributes.forEach((attrval)=>{
+            document.querySelector('#cardAttrInputList').innerHTML += userInputGenerator(attrval)
+            attrEnum++
+        })
+    }
 }
 
 function previewMatch(id) {
@@ -86,8 +89,11 @@ function showCardForm(event){
     let crudButton = document.querySelector('#crudButtons')
     console.log(event.target.id)
     if (event.target.id == 'createCardInit'){
+        document.querySelector('#cardId').value = 'default'
+        document.querySelector('#mediaForm').setAttribute('method', 'POST')
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>`
     } else if (event.target.classList.contains('editBtn')){
+        document.querySelector('#mediaForm').setAttribute('method', 'PUT')
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editCard(event)'>Edit card</button>`
     }
     let cardFormEl = document.querySelector('#cardFormBlock')
@@ -109,13 +115,14 @@ async function showAllCards(){
     let cardListEl = document.querySelector('#cardListBlock')
     cardListEl.innerHTML = ''
     cards.forEach(card=>{
-        cardListEl.innerHTML += cardThumbnail(card)
+        cardListEl.innerHTML = cardThumbnail(card) + cardListEl.innerHTML
     })
 }
 
 async function showDeckCards(deckId){
-    let cards = await apiCall('/api/cards/deck', deckId)
+    let cards = await apiCall(`/api/cards/deck/${deckId}` )
     let cardListEl = document.querySelector('#cardListBlock')
+    document.querySelector('#cardListMain').classList.remove('d-none')
     cardListEl.innerHTML = ''
     cards.forEach(card=>{
         cardListEl.innerHTML += cardThumbnail(card)
@@ -127,6 +134,7 @@ async function getCard(event){
     console.log(event.target.parentNode.parentNode)
     let cardEl = event.target.parentNode.parentNode
     let id = cardEl.dataset.cardId
+    document.querySelector('#cardId').value = id
     let card = await apiCall(`/api/cards/${id}`)
     showCardForm(event)
     fillCardForm(card)
@@ -134,10 +142,10 @@ async function getCard(event){
 
 async function editCard(event){
     event.preventDefault()
-    console.log(event.target.parentNode.parentNode)
-    let cardEl = event.target.parentNode.parentNode
-    let id = cardEl.dataset.cardId
-    // return await apiCall(`/api/cards/${id}`, 'put', data)
+    let result = await apiCall('/api/cards', 'put', '#mediaForm')
+    clearCardForm()
+    showAllCards()
+    return result
 }
 
 async function createCard(event){
@@ -182,7 +190,7 @@ async function deleteCard(event){
 }
 
 function fillDeckForm(deck){
-    document.querySelector('#deckId').value = deck.deckId
+    document.querySelector('#deckId').value = deck.id
     document.querySelector('#deckNameInput').value = deck.name
 }
 
@@ -191,7 +199,7 @@ function clearDeckForm(){
     document.querySelector('#deckNameInput').value = ''
 }
 
-function showDeckForm(event){
+function showDeckForm(event, id){
     event.preventDefault()
     clearDeckForm()
     let cardFormEl = document.querySelector('#cardListMain')
@@ -203,7 +211,7 @@ function showDeckForm(event){
     crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editDeck(event)'>Edit deck</button>`
     let deckFormEl = document.querySelector('#deckFormBlock')
     deckFormEl.classList.remove('d-none')
-    showDeckCards(deckId)
+    showDeckCards(id)
 }
 
 
@@ -234,7 +242,7 @@ async function getDeck(event){
     let id = deckEl.dataset.deckId
     console.log('getDeck: id ', id)
     let deck = await apiCall(`/api/decks/${id}`)
-    showDeckForm(event)
+    showDeckForm(event, id)
     fillDeckForm(deck)
 }
 
@@ -243,9 +251,13 @@ async function editDeck(event){
     let deckEl = event.target.parentNode.parentNode
     console.log('deckEl: ', deckEl)
     // let id = deckEl.dataset.deckId
-    let id = document.querySelector('#deckId')
-    console.log('editDeck id ', id)
-    let response = await apiCall(`/api/decks/`, 'put', id)
+    // let deckForm = document.querySelector('#deckForm')
+    // console.log('editDeck deckForm ', deckForm)
+    const data = {
+        deckId: document.querySelector('#deckId').value,
+        deckNameInput: document.querySelector('#deckNameInput').value
+    }
+    let response = await apiCall(`/api/decks`, 'put', data)
     let cardFormEl = document.querySelector('#cardListMain')
     cardFormEl.classList.remove('d-none')
     let deckListEl = document.querySelector('#deckListMain')

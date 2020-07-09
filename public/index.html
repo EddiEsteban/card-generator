@@ -13,12 +13,13 @@
         <h1 class="display-4">Card Generator</h1>
         <p class="lead">Create cards with their own face properties. Prepare decks of cards.</p>
         <hr class="my-4">
+        <p>Protip to screenshot card on Chrome: Inspect element with id=cardPreview → [Windows] Ctrl + Shift + P / [Mac] Cmd + Shift + P → type "node screenshot" → Confirm and save in your directory of choice</p>
         <a class="btn btn-primary btn-lg" id='createCardInit' onClick='showCardForm(event)' role="button">Create cards</a>
     </div>
     <div class='container'>
         <div class='row d-none' id='deckFormBlock'>
-            <div class='col-md-6 col-lg-8' id='deckForm'>
-                <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST">
+            <div class='col-md-6 col-lg-8' id='deckFormDiv'>
+                <form id='deckForm' role="form" enctype="multipart/form-data" method="POST">
                     <div class='form-group'>
                         <input type='hidden' name='deckId' id='deckId' class='form-control'>
                         <label for='DeckNameInput'><h5>Name of deck</h5></label>
@@ -31,6 +32,7 @@
         <div class='row d-none' id='cardFormBlock'>
             <div class='col-md-6 col-lg-8' id='cardForm'>
                 <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST">
+                    <input class='d-none' type='text' name='cardId' id='cardId' value='default'>
                     <div class='form-group'>
                         <label for='cardNameInput'><h5>Name of card</h5></label>
                         <input type='text' name='cardNameInput' id='cardNameInput' class='form-control' onInput='previewMatch(id)'>
@@ -58,7 +60,7 @@
                 </form>
             </div>
             <div class='col-md-6 col-lg-4' id='cardPreviewBlock'>
-            <div class="card" >
+            <div class="card" id='cardPreview'>
                 <h5 class="card-title card-body" id='cardNamePreview'>Card title</h5>
             <img src="./assets/img/The Challengers.png" class="card-img-top img-fluid" id='cardImgPreview' alt="example image">
             <p class="card-text card-body" id='cardDescPreview'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>

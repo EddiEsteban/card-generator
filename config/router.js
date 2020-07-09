@@ -48,14 +48,15 @@ function router( app ){
 
         console.log( '[POST] we received this data:', req.body.cardNameInput, req.body.cardNameDesc, imageUrl, null, req.body.attributes )
 
-        let attributes = {}
+        let attributes = []
         let i = 0
+
         let validAttr = true
         while( validAttr ){
-            const attrName = req.body[`attr${i}Input`]
-            const attrVal = req.body[`val${i}Input`]
+            let attrName = req.body[`attr${i}Input`]
+            let attrVal = req.body[`val${i}Input`]
             if( attrName ){
-                attributes[attrName] = attrVal
+                attributes.push({attr: attrName, val: attrVal})
             } else {
                 validAttr = false
             }
@@ -75,25 +76,41 @@ function router( app ){
         console.log( '... ', deleteResult )
         res.send( { status: true, message: 'Card Deleted successfully' } )
     })
-    // saveCard
-    app.put('/api/cards', async function(req, res) {
-        console.log( '[PUT] we received this data:', req.body )
-        if( !req.body.id ) {
-            res.status(404).send( { message: 'Invalid id' } )
-        }
-        const saveResult = await orm.saveCard( req.body.id, req.body.name, req.body.desc, req.body.location, req.body.deckId, req.body.attributes )
-        console.log( '... ', saveResult )
 
-        if (saveResult.affectedRows === 0){
-            postMsg = "Card doesn't exist"
-            console.log('[PUT] saveDeck: ', postMsg)
-            res.send( { status: false, message: postMsg } )
-        } else {
-            postMsg = 'Card Updated successfully'
-            console.log('[PUT] saveDeck: ', postMsg)
-            res.send( { status: true, message: postMsg } )
+    //saveCard
+    app.put('/api/cards', upload.single('imageFile'), async function(req, res) {
+        let cardData = req.body
+        console.log('PUT cardData: ', cardData)
+        // if they uploaded a file, let's add it to the thumbData
+        let imageUrl = './assets/img/The Challengers.png'
+        if( req.file ){
+            imageUrl = await uploadResizer('../'+req.file.path, req.file.originalname, 512, 512);
+            // imageUrl = `uploads/${req.file.filename}`
+            console.log('image processed ', imageUrl, req.file)
         }
 
+        console.log( '[PUT] we received this data:', req.body.cardId, req.body.cardNameInput, req.body.cardNameDesc, imageUrl, null, req.body.attributes )
+
+        let attributes = []
+        let i = 0
+
+        let validAttr = true
+        while( validAttr ){
+            let attrName = req.body[`attr${i}Input`]
+            let attrVal = req.body[`val${i}Input`]
+            if( attrName ){
+                attributes.push({attr: attrName, val: attrVal})
+            } else {
+                validAttr = false
+            }
+            i++
+        }
+
+
+        console.log(`attributes: `, attributes)
+        const saveResult = await orm.saveCard(req.body.cardId, req.body.cardNameInput, req.body.cardDescInput, imageUrl, null, attributes )
+        console.log( `... insertId: ${saveResult.insertId} ` )
+        res.send( { status: true, insertId: saveResult.insertId, message: 'Card inserted successfully' } )
     })
     /*
     // addCardAttributes
@@ -133,7 +150,7 @@ function router( app ){
         if( !req.body.deckId ) {
             res.status(404).send( { message: 'Invalid id' } )
         }
-        const saveResult = await orm.saveDeck( req.body.deckId, req.body.deckName )
+        const saveResult = await orm.saveDeck( req.body.deckId, req.body.deckNameInput )
         console.log( '... ', saveResult )
         let postMsg = ''
         if (saveResult.affectedRows === 0){

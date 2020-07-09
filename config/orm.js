@@ -69,9 +69,9 @@ function deleteDeck( id ){
 }
 
 function saveDeck( id, name ){
-    console.log( ' updating deck: ', name )
-    console.log( ' updating deck: ', id )
-    return db.query( 'UPDATE decks SET ? WHERE id=? ', [{ name }, id ] )
+    console.log( ' updating deck name: ', name )
+    console.log( ' updating deck id: ', id )
+    return db.query( 'UPDATE decks SET name=? WHERE id=? ', [ name , id ] )
 }
 
 function getDeck( id ){
