@@ -20,6 +20,7 @@
         <div class='row d-none' id='cardFormBlock'>
             <div class='col-md-6 col-lg-8' id='cardForm'>
                 <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST">
+                    <input class='d-none' type='text' name='cardId' id='cardId' value='default'>
                     <div class='form-group'>
                         <label for='cardNameInput'><h5>Name of card</h5></label>
                         <input type='text' name='cardNameInput' id='cardNameInput' class='form-control' onInput='previewMatch(id)'>

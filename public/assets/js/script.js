@@ -23,10 +23,13 @@ function fillCardForm(card){
     document.querySelector('#cardNameInput').value = card.name
     document.querySelector('#cardDescInput').value = card.description
     // document.querySelector('#cardImgInput').value = card.img
-    console.log(card.attributes)
-    card.attributes.forEach((attrval)=>{
-        document.querySelector('#cardAttrInputList').innerHTML += userInputGenerator(attrval)
-    })
+    console.log('card attributes: ', card.attributes)
+    if (card.attributes){
+        card.attributes.forEach((attrval)=>{
+            document.querySelector('#cardAttrInputList').innerHTML += userInputGenerator(attrval)
+            attrEnum++
+        })
+    }
 }
 
 function previewMatch(id) {
@@ -86,8 +89,11 @@ function showCardForm(event){
     let crudButton = document.querySelector('#crudButtons')
     console.log(event.target.id)
     if (event.target.id == 'createCardInit'){
+        document.querySelector('#cardId').value = 'default'
+        document.querySelector('#mediaForm').setAttribute('method', 'POST')
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>`
     } else if (event.target.classList.contains('editBtn')){
+        document.querySelector('#mediaForm').setAttribute('method', 'PUT')
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editCard(event)'>Edit card</button>`
     }
     let cardFormEl = document.querySelector('#cardFormBlock')
@@ -118,6 +124,7 @@ async function getCard(event){
     console.log(event.target.parentNode.parentNode)
     let cardEl = event.target.parentNode.parentNode
     let id = cardEl.dataset.cardId
+    document.querySelector('#cardId').value = id
     let card = await apiCall(`/api/cards/${id}`)
     showCardForm(event)
     fillCardForm(card)
@@ -125,10 +132,10 @@ async function getCard(event){
 
 async function editCard(event){
     event.preventDefault()
-    console.log(event.target.parentNode.parentNode)
-    let cardEl = event.target.parentNode.parentNode
-    let id = cardEl.dataset.cardId
-    // return await apiCall(`/api/cards/${id}`, 'put', data)
+    let result = await apiCall('/api/cards', 'put', '#mediaForm')
+    clearCardForm()
+    showAllCards()
+    return result
 }
 
 async function createCard(event){
