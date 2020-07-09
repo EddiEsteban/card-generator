@@ -1,56 +1,59 @@
-class Card {
-    constructor(name, img, description, attributes){
-        this.name = name,
-        this.img = img,
-        this.description = description,
-        this.attributes = attributes
-    }
-    getName(){
-        return this.name
-    }
-}
 
 let attrEnum
 
 function clearCardForm(){
-    document.querySelector('#cardNameInput').value = ''
+    document.querySelector('#cardNameInput').setAttribute('value', '')
     document.querySelector('#cardDescInput').value = ''
     // document.querySelector('#cardImgInput').value = ''
     document.querySelector('#cardAttrInputList').innerHTML = ''
+
+    document.querySelector('#cardNamePreview').innerHTML = ''
+    document.querySelector('#cardDescPreview').innerHTML = ''
+    // document.querySelector('#cardImgInput').innerHTML = ''
+    document.querySelector('#cardAttrListPreview').innerHTML = ''
 }
 
 function fillCardForm(card){
-    document.querySelector('#cardNameInput').value = card.name
+    document.querySelector('#cardNameInput').setAttribute('value', card.name)
     document.querySelector('#cardDescInput').value = card.description
     // document.querySelector('#cardImgInput').value = card.img
-    console.log('card attributes: ', card.attributes)
     if (card.attributes){
         card.attributes.forEach((attrval)=>{
-            document.querySelector('#cardAttrInputList').innerHTML += userInputGenerator(attrval)
+            console.log('fillCard attributes iter', attrval)
+            addAttribute(attrval)
             attrEnum++
         })
     }
+    previewMatch('cardNameInput')
+    previewMatch('cardDescInput')
 }
 
 function previewMatch(id) {
     let previewId = id.slice(0,-5)+'Preview'
-    let field = document.querySelector(`#${id}`).value;
-    document.querySelector(`#${previewId}`).innerHTML = field
+    let previewEl = document.querySelector(`#${previewId}`)
+    let fieldEl = document.querySelector(`#${id}`)
+    if (fieldEl.matches('input')){
+        fieldEl.setAttribute('value', fieldEl.value)
+    } else if (fieldEl.matches('textarea')){
+        fieldEl.innerHTML = fieldEl.value
+    }
+    previewEl.innerHTML = fieldEl.value
 }
 
 function userInputGenerator(attrval={attr: '', val: ''}){
+    console.log('inputGen', attrval)
     let attrHTML = `<label for='attr${attrEnum}Input'>Attribute name</label><input type='text' name='attr${attrEnum}Input' id='attr${attrEnum}Input' class='form-control' onInput='previewMatch(id)' value=${attrval.attr}>`
     let valHTML = `<label for='val${attrEnum}Input'>Value</label><textarea name='val${attrEnum}Input' id='val${attrEnum}Input' class='form-control' onInput='previewMatch(id)'>${attrval.val}</textarea>`
     return `<div class='form-row mb-2' id='attrval${attrEnum}'><div class='col-md-6 col-lg-4'>${attrHTML}</div><div class='col-md-6 col-md-8'>${valHTML}</div></div>`
 }
 
 
-function addAttribute(){
+function addAttribute(attrval={attr: '', val: ''}){
     let attrListEl = document.querySelector('#cardAttrInputList')
     let previewAttrEl = document.querySelector('#cardAttrListPreview')
-    attrListEl.innerHTML += userInputGenerator()
-    console.log('attrListEl: ', attrListEl)
-    previewAttrEl.innerHTML += `<li class='list-group-item'><div class='row'><div class='col' id='attr${attrEnum}Preview'></div><div class='col' id='val${attrEnum}Preview'></div></div></li>`
+    console.log({attrval, attrListEl, previewAttrEl})
+    attrListEl.innerHTML += userInputGenerator(attrval)
+    previewAttrEl.innerHTML += `<li class='list-group-item'><div class='row'><div class='col' id='attr${attrEnum}Preview'>${attrval.attr}</div><div class='col' id='val${attrEnum}Preview'>${attrval.val}</div></div></li>`
     attrEnum +=1
 }
 
@@ -87,13 +90,16 @@ function showCardForm(event){
     event.preventDefault()
     clearCardForm()
     let crudButton = document.querySelector('#crudButtons')
-    console.log(event.target.id)
     if (event.target.id == 'createCardInit'){
         document.querySelector('#cardId').value = 'default'
         document.querySelector('#mediaForm').setAttribute('method', 'POST')
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>`
     } else if (event.target.classList.contains('editBtn')){
         document.querySelector('#mediaForm').setAttribute('method', 'PUT')
+        let fieldIds = ['cardNameInput', 'cardDescInput']
+        fieldIds.forEach((id)=>{
+            previewMatch(id)
+        })
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editCard(event)'>Edit card</button>`
     }
     let cardFormEl = document.querySelector('#cardFormBlock')
@@ -121,13 +127,15 @@ async function showAllCards(){
 
 async function getCard(event){
     event.preventDefault()
-    console.log(event.target.parentNode.parentNode)
     let cardEl = event.target.parentNode.parentNode
     let id = cardEl.dataset.cardId
     document.querySelector('#cardId').value = id
     let card = await apiCall(`/api/cards/${id}`)
     showCardForm(event)
+    clearCardForm()
     fillCardForm(card)
+    
+
 }
 
 async function editCard(event){
@@ -220,8 +228,8 @@ function previewImg(event){
 }
 
 async function mediaList( id ){
-    const getRequest = await apiCall( '/api/media' )
-    console.log( '[mediaList] ', getRequest )
+    // const getRequest = await apiCall( '/api/media' )
+    // console.log( '[mediaList] ', getRequest )
 
     if( getRequest.status ){
         const mediaListEl = document.querySelector( '#mediaList' )
@@ -243,7 +251,7 @@ async function uploadMedia( event ){
     //* because we are using the built-in browser form-builder, we need valid
     //! **name** attributes - for ease we give same values as the id's
     const uploadResponse = await apiCall( '/api/media', 'post', '#mediaForm' )
-    console.log( '[uploadResponse] ', uploadResponse )
+    // console.log( '[uploadResponse] ', uploadResponse )
 
     if( uploadResponse.status ){
         // clear the data

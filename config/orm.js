@@ -3,7 +3,6 @@ const fs = require( 'fs' )
 const dbFile = './medialist.data'
 
 function getCard(id){
-    console.log('getting card with id: ', id)
     return db.query( 'SELECT * FROM cards WHERE id=?', id)
 }
 

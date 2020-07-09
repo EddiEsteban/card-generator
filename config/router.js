@@ -8,21 +8,21 @@ function router( app ){
 
 
     app.get('/api/cards', async (req, res)=>{
-        console.log('[GET] getting all cards')
+        // console.log('[GET] getting all cards')
         let cards = await orm.getCards()
         res.send(cards)
     })
 
     app.get('/api/cards/:id', async (req, res)=>{
         const cardId = req.params.id
-        console.log( `[GET] id=${cardId}` )
+        // console.log( `[GET] id=${cardId}` )
         const getResult = await orm.getCard( cardId )
         res.send( getResult[0] )
     })
 
     app.get('/api/cards/:search?', async function(req, res) {
         // const search = req.params.search ? { due: req.params.due } : ''
-        console.log( `[GET] getting list, search=${req.params.search}`)
+        // console.log( `[GET] getting list, search=${req.params.search}`)
         const list = await orm.getCard( req.params.search )
 
         res.send( list )
@@ -172,9 +172,9 @@ function router( app ){
     })
     // get ALL Decks
     app.get('/api/decks', async (req, res)=>{
-        console.log('[GET] getting all decks')
+        // console.log('[GET] getting all decks')
         let decks = await orm.getDeckswithImg()
-        console.log(decks)
+        // console.log(decks)
         res.send(decks)
     })
 
