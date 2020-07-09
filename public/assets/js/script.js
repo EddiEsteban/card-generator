@@ -21,7 +21,6 @@ function fillCardForm(card){
         card.attributes.forEach((attrval)=>{
             console.log('fillCard attributes iter', attrval)
             addAttribute(attrval)
-            attrEnum++
         })
     }
     previewMatch('cardNameInput')
@@ -144,8 +143,6 @@ async function getCard(event){
     showCardForm(event)
     clearCardForm()
     fillCardForm(card)
-    
-
 }
 
 async function editCard(event){
