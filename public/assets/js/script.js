@@ -4,12 +4,11 @@ let attrEnum
 function clearCardForm(){
     document.querySelector('#cardNameInput').setAttribute('value', '')
     document.querySelector('#cardDescInput').value = ''
-    // document.querySelector('#cardImgInput').value = ''
     document.querySelector('#cardAttrInputList').innerHTML = ''
-
+    document.querySelector('#imageFile').value = null
     document.querySelector('#cardNamePreview').innerHTML = ''
     document.querySelector('#cardDescPreview').innerHTML = ''
-    // document.querySelector('#cardImgInput').innerHTML = ''
+    document.querySelector('#cardImgPreview').src = './assets/img/The Challengers.png'
     document.querySelector('#cardAttrListPreview').innerHTML = ''
 }
 
@@ -91,9 +90,8 @@ function showCardForm(event){
     event.preventDefault()
     clearCardForm()
     let crudButton = document.querySelector('#crudButtons')
+    document.querySelector('#imageFile').value = null
     if (event.target.id == 'createCardInit'){
-        document.querySelector('#cardId').value = 'default'
-        document.querySelector('#cardImgUrl').value = 'default'
         document.querySelector('#mediaForm').setAttribute('method', 'POST')
         crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='createCard(event)'>Create card</button>`
     } else if (event.target.classList.contains('editBtn')){
@@ -103,6 +101,11 @@ function showCardForm(event){
     }
     let cardFormEl = document.querySelector('#cardFormBlock')
     cardFormEl.classList.remove('d-none')
+}
+
+function hideCardForm(){
+    let cardFormEl = document.querySelector('#cardFormBlock')
+    cardFormEl.classList.add('d-none')
 }
 
 let cardThumbnail = (card)=>{
@@ -152,6 +155,7 @@ async function editCard(event){
     let result = await apiCall('/api/cards', 'put', '#mediaForm')
     clearCardForm()
     showAllCards()
+    hideCardForm()
     return result
 }
 
