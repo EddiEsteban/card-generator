@@ -109,7 +109,7 @@ async function showAllCards(){
     let cardListEl = document.querySelector('#cardListBlock')
     cardListEl.innerHTML = ''
     cards.forEach(card=>{
-        cardListEl.innerHTML += cardThumbnail(card)
+        cardListEl.innerHTML = cardThumbnail(card) + cardListEl.innerHTML
     })
 }
 

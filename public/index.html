@@ -13,6 +13,7 @@
         <h1 class="display-4">Card Generator</h1>
         <p class="lead">Create cards with their own face properties. Prepare decks of cards.</p>
         <hr class="my-4">
+        <p>Protip to screenshot card on Chrome: Inspect element with id=cardPreview → [Windows] Ctrl + Shift + P / [Mac] Cmd + Shift + P → type "node screenshot" → Confirm and save in your directory of choice</p>
         <a class="btn btn-primary btn-lg" id='createCardInit' onClick='showCardForm(event)' role="button">Create cards</a>
     </div>
     <div class='container'>
@@ -46,7 +47,7 @@
                 </form>
             </div>
             <div class='col-md-6 col-lg-4' id='cardPreviewBlock'>
-            <div class="card" >
+            <div class="card" id='cardPreview'>
                 <h5 class="card-title card-body" id='cardNamePreview'>Card title</h5>
             <img src="./assets/img/The Challengers.png" class="card-img-top img-fluid" id='cardImgPreview' alt="example image">
             <p class="card-text card-body" id='cardDescPreview'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>

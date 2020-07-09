@@ -11,7 +11,7 @@ INSERT INTO decks (name) VALUES ("Traditional");
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "Ace of Spades",
     NULL,
-    "assets/img/The Challengers.png",
+    "assets/img/aceOfSpades.png",
     1,
     '[
         {"attr": "Suit", "val": "Spade"},
@@ -20,7 +20,7 @@ INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "Ace of Clubs",
     NULL,
-    "assets/img/The Challengers.png",
+    "assets/img/aceOfClubs.png",
     1,
     '[
         {"attr": "Suit", "val": "Club"},
@@ -29,7 +29,7 @@ INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "Ace of Hearts",
     NULL,
-    "assets/img/The Challengers.png",
+    "assets/img/aceOfHearts.png",
     1,
     '[
         {"attr": "Suit", "val": "Heart"},
@@ -38,7 +38,7 @@ INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
 INSERT INTO cards (name, description, img, deck_id, attributes ) VALUES (
     "Ace of Diamonds",
     NULL,
-    "assets/img/The Challengers.png",
+    "assets/img/aceOfDiamonds.png",
     1,
     '[
         {"attr": "Suit", "val": "Diamond"},
