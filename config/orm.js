@@ -10,6 +10,10 @@ async function getCards(){
     return await db.query('SELECT * FROM cards')
 }
 
+async function getCardsforDeck(deckId){
+    return await db.query('SELECT * FROM cards where deck_id=?', deckId)
+}
+
 function getCardName( id ){
     console.log('getting card name')
     return db.query( 'SELECT name FROM cards WHERE id=? ', id )
@@ -64,9 +68,9 @@ function deleteDeck( id ){
 }
 
 function saveDeck( id, name ){
-    console.log( ' updating deck: ', name )
-    console.log( ' updating deck: ', id )
-    return db.query( 'UPDATE decks SET ? WHERE id=? ', [{ name }, id ] )
+    console.log( ' updating deck name: ', name )
+    console.log( ' updating deck id: ', id )
+    return db.query( 'UPDATE decks SET name=? WHERE id=? ', [ name , id ] )
 }
 
 function getDeck( id ){
@@ -78,33 +82,16 @@ async function getDecks(){
 }
 
 async function getDeckswithImg(){
-    let queryString = 'select distinct d.id, d.name, c.img from decks d, cards c where d.id=c.deck_id '+
-    'union select d.id, d.name, "assets/img/blank_deck.jpg" from decks d, cards c where d.id!=c.deck_id'
+    // let queryString = 'select distinct d.id, d.name, c.img from decks d, cards c where d.id=c.deck_id '+
+    // 'union select d.id, d.name, "assets/img/blank_deck.jpg" from decks d, cards c where d.id!=c.deck_id '+
+    // 'union select d.id, d.name, "assets/img/blank_deck.jpg" from decks d, cards c where c.deck_id=null';
+    let queryString = 'select distinct id, name, "assets/img/blank_deck.jpg" as img from decks'
     return await db.query(queryString)
 }
 
-
-/*
-status
-getName - done
-getImg - done
-getDesc - done
-setAttributes - done (may need to test due to JSON)
-saveCard
-viewCard
-addToDeck
-    createDeck
-
-View Cards
-viewCard/getCard - done
-editCard
-deleteCard - done
-
-deleteAttribute
-
-getDecks
-
-*/
+async function updateCardsDeck(deckId){
+    return await db.query('UPDATE cards SET deck_id=null WHERE deck_id = ?', deckId)
+}
 
 function getMedia(){
     console.log( `[getMedia] ${__dirname}` )
@@ -124,6 +111,7 @@ function saveMedia( mediaData ){
 module.exports = {
     getCard,
     getCards,
+    getCardsforDeck,
     getCardName,
     getCardLocation,
     getCardDesc,
@@ -136,6 +124,7 @@ module.exports = {
     getDeck,
     getDecks,
     getDeckswithImg,
+    updateCardsDeck,
     getMedia,
     saveMedia
 }
