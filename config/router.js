@@ -20,6 +20,13 @@ function router( app ){
         res.send( getResult[0] )
     })
 
+    app.get('/api/cards/deck/:id', async (req, res)=>{
+        const deckId = req.params.id
+        console.log( `[GET] id=${deckId}` )
+        const getResult = await orm.getCardsforDeck( deckId )
+        res.send( getResult )
+    })
+
     app.get('/api/cards/:search?', async function(req, res) {
         // const search = req.params.search ? { due: req.params.due } : ''
         console.log( `[GET] getting list, search=${req.params.search}`)
@@ -34,7 +41,6 @@ function router( app ){
         // if they uploaded a file, let's add it to the thumbData
         let imageUrl = './assets/img/The Challengers.png'
         if( req.file ){
-            
             imageUrl = await uploadResizer('../'+req.file.path, req.file.originalname, 512, 512);
             // imageUrl = `uploads/${req.file.filename}`
             console.log('image processed ', imageUrl, req.file)
@@ -42,22 +48,19 @@ function router( app ){
 
         console.log( '[POST] we received this data:', req.body.cardNameInput, req.body.cardNameDesc, imageUrl, null, req.body.attributes )
 
-        
         let attributes = {}
         let i = 0
-    
         let validAttr = true
         while( validAttr ){
-             const attrName = req.body[`attr${i}Input`]
-             const attrVal = req.body[`val${i}Input`]
-             if( attrName ){
-                  attributes[attrName] = attrVal
-             } else {
-                 validAttr = false
-             }
-             i++
+            const attrName = req.body[`attr${i}Input`]
+            const attrVal = req.body[`val${i}Input`]
+            if( attrName ){
+                attributes[attrName] = attrVal
+            } else {
+                validAttr = false
+            }
+            i++
         }
-
 
         console.log(`attributes: `, attributes)
         const saveResult = await orm.addCard( req.body.cardNameInput, req.body.cardDescInput, imageUrl, null, attributes )
@@ -119,6 +122,8 @@ function router( app ){
         console.log( `[DELETE] id=${deckId}` )
         const deleteResult = await orm.deleteDeck( deckId )
         console.log( '... ', deleteResult )
+        const updateResult = await orm.updateCardsDeck( deckId )
+        console.log( '... ', updateResult )
         res.send( { status: true, message: 'Deck Deleted successfully' } )
     })
 
@@ -147,15 +152,14 @@ function router( app ){
     app.get('/api/decks/:id', async function(req, res) {
         console.log( `[GET] getting deck, id=${req.params.id}`)
         const list = await orm.getDeck( id=req.params.id )
-
-        res.send( list )
+        console.log('get deck list: ', list)
+        res.send( list[0] )
     })
     // get ALL Decks
     app.get('/api/decks', async (req, res)=>{
         console.log('[GET] getting all decks')
         let decks = await orm.getDeckswithImg()
-        console.log(decks)
-        res.send(decks)
+        res.send( decks )
     })
 
 

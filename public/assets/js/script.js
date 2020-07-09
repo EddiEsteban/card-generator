@@ -113,6 +113,15 @@ async function showAllCards(){
     })
 }
 
+async function showDeckCards(deckId){
+    let cards = await apiCall('/api/cards/deck', deckId)
+    let cardListEl = document.querySelector('#cardListBlock')
+    cardListEl.innerHTML = ''
+    cards.forEach(card=>{
+        cardListEl.innerHTML += cardThumbnail(card)
+    })
+}
+
 async function getCard(event){
     event.preventDefault()
     console.log(event.target.parentNode.parentNode)
@@ -172,36 +181,86 @@ async function deleteCard(event){
     return result
 }
 
+function fillDeckForm(deck){
+    document.querySelector('#deckId').value = deck.deckId
+    document.querySelector('#deckNameInput').value = deck.name
+}
+
+function clearDeckForm(){
+    document.querySelector('#deckId').value = ''
+    document.querySelector('#deckNameInput').value = ''
+}
+
+function showDeckForm(event){
+    event.preventDefault()
+    clearDeckForm()
+    let cardFormEl = document.querySelector('#cardListMain')
+    cardFormEl.classList.add('d-none')
+    let deckListEl = document.querySelector('#deckListMain')
+    deckListEl.classList.add('d-none')
+    let crudButton = document.querySelector('#crudButton')
+    console.log('event.target.id: ', event.target.id)
+    crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editDeck(event)'>Edit deck</button>`
+    let deckFormEl = document.querySelector('#deckFormBlock')
+    deckFormEl.classList.remove('d-none')
+    showDeckCards(deckId)
+}
+
+
 
 let deckThumbnail = (deck)=>{
-    return `<div class="card col-4 col-sm-3 col-md-2">`+
+    return `<div class="card col-4 col-sm-3 col-md-2" data-deck-id='${deck.id}'>`+
         `<img src="${deck.img}" class="card-img-top img-fluid" alt="...">`+
         `<div class="card-body">`+
-        `<h5 class="card-title">${deck.name}</h5>`+
+        `<h6 class="card-title">${deck.name}</h6>`+
+        `<button class='btn btn-secondary editBtn' onClick='getDeck(event)'>📝</button>`+
+        `<button class='btn btn-danger delBtn' onClick='deleteDeck(event)'>🗑</button>`+
         `</div></div>`
 }
 
 async function showAllDecks(){
     let decks = await apiCall('/api/decks')
     let deckListEl = document.querySelector('#deckListBlock')
+    deckListEl.innerHTML = ''
     decks.forEach(deck=>{
-        deckListEl.innerHTML += deckThumbnail(deck)
+        deckListEl.innerHTML = deckThumbnail(deck) + deckListEl.innerHTML
     })
 }
 
-async function getDeck(){
-    let id
-    return await apiCall(`/decks/${id}`)
+async function getDeck(event){
+    event.preventDefault()
+    console.log(event.target.parentNode.parentNode)
+    let deckEl = event.target.parentNode.parentNode
+    let id = deckEl.dataset.deckId
+    console.log('getDeck: id ', id)
+    let deck = await apiCall(`/api/decks/${id}`)
+    showDeckForm(event)
+    fillDeckForm(deck)
 }
 
-async function editDeck(){
-    let deckEl = document.querySelector('#')
-    let id = deckEl.dataset.id
-    return await apiCall(`/api/decks/${id}`, 'put', data)
+async function editDeck(event){
+    event.preventDefault()
+    let deckEl = event.target.parentNode.parentNode
+    console.log('deckEl: ', deckEl)
+    // let id = deckEl.dataset.deckId
+    let id = document.querySelector('#deckId')
+    console.log('editDeck id ', id)
+    let response = await apiCall(`/api/decks/`, 'put', id)
+    let cardFormEl = document.querySelector('#cardListMain')
+    cardFormEl.classList.remove('d-none')
+    let deckListEl = document.querySelector('#deckListMain')
+    deckListEl.classList.remove('d-none')
+    return response
 }
 
 async function deleteDeck(){
-    return await apiCall(`/api/decks/${id}`, 'delete')
+    event.preventDefault()
+    let deckEl = event.target.parentNode.parentNode
+    let id = deckEl.dataset.deckId
+    console.log('delete id ', id)
+    let result = await apiCall(`/api/decks/${id}`, 'delete')
+    showAllDecks()
+    return result
 }
 
 function previewImg(event){
@@ -249,7 +308,8 @@ async function uploadMedia( event ){
 }
 
 async function mainApp(){
+    await showAllDecks()
+
     await showAllCards()
 
-    await showAllDecks()
 }

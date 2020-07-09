@@ -16,6 +16,18 @@
         <a class="btn btn-primary btn-lg" id='createCardInit' onClick='showCardForm(event)' role="button">Create cards</a>
     </div>
     <div class='container'>
+        <div class='row d-none' id='deckFormBlock'>
+            <div class='col-md-6 col-lg-8' id='deckForm'>
+                <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST">
+                    <div class='form-group'>
+                        <input type='hidden' name='deckId' id='deckId' class='form-control'>
+                        <label for='DeckNameInput'><h5>Name of deck</h5></label>
+                        <input type='text' name='deckNameInput' id='deckNameInput' class='form-control'>
+                    </div>
+                    <div id='crudButton'></div>
+                </form>
+            </div>
+        </div>
         <div class='row d-none' id='cardFormBlock'>
             <div class='col-md-6 col-lg-8' id='cardForm'>
                 <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST">
@@ -54,17 +66,20 @@
             </div>
             </div>
         </div>
-        <hr>
-        <h3>List of cards</h3>
-        <div class='row' id='cardListBlock'>
-            
-            <!-- {{{block 'cardList'}}} -->
-        </div>
-        <hr>
-        <h3>List of Decks</h3></h3>
-        <div class='row' id='deckListBlock'>
-
+        <div id='deckListMain'>   
+            <hr>
+            <h3>List of Decks</h3>
+            <div class='row' id='deckListBlock'>
+            </div>
         </div>        <!-- {{{block 'example'}}} -->
+        <div id='cardListMain'>   
+            <hr>
+            <h3>List of cards</h3>
+            <div class='row' id='cardListBlock'>        
+            <!-- {{{block 'cardList'}}} -->
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
