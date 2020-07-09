@@ -22,7 +22,7 @@ Create and edit cards. Organize by deck.
 
 <a id='toc-install'></a>
 ## Installation
-Use app at heroku instance linked [here]().
+Use app at heroku instance linked [here](https://cryptic-journey-45384.herokuapp.com/).
 
 <a id='toc-usage'></a>
 ## Usage
