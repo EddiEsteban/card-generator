@@ -3,3 +3,4 @@ package-lock.json
 .env
 eddi/
 public/uploads/*
+.DS_Store
