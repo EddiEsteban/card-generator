@@ -227,6 +227,9 @@ function showDeckForm(event, id) {
 }
 
 
+function hideDeckForm() {
+    document.querySelector('#deckFormBlock').classList.add('d-none')
+}
 
 let deckThumbnail = (deck) => {
     return `<div class="card col-4 col-sm-3 col-md-2" data-deck-id='${deck.id}'>` +
@@ -260,11 +263,10 @@ async function getDeck(event) {
 
 async function editDeck(event) {
     event.preventDefault()
-    let deckEl = event.target.parentNode.parentNode
-    console.log('deckEl: ', deckEl)
+    // Had to comment these lines out and create object to pass since passing form wasn't working
+    // let deckEl = event.target.parentNode.parentNode
     // let id = deckEl.dataset.deckId
     // let deckForm = document.querySelector('#deckForm')
-    // console.log('editDeck deckForm ', deckForm)
     const data = {
         deckId: document.querySelector('#deckId').value,
         deckNameInput: document.querySelector('#deckNameInput').value
@@ -274,6 +276,9 @@ async function editDeck(event) {
     cardFormEl.classList.remove('d-none')
     let deckListEl = document.querySelector('#deckListMain')
     deckListEl.classList.remove('d-none')
+    clearDeckForm()
+    showAllDecks()
+    hideDeckForm()
     return response
 }
 
