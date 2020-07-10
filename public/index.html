@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src='./assets/js/script.js'></script>
     <link rel='stylesheet' type='text/css' href='./assets/css/style.css'>
     <title>Card Generator</title>
 </head>
+
 <body onLoad='mainApp()'>
     <div class="jumbotron" style='margin-top:5%' id='jumboIntro'>
         <h1 class="display-4">Card Generator</h1>
         <p class="lead">Create cards with their own face properties. Prepare decks of cards.</p>
         <hr class="my-4">
-        <p>Protip to screenshot card on Chrome: Inspect element with id=cardPreview → [Windows] Ctrl + Shift + P / [Mac] Cmd + Shift + P → type "node screenshot" → Confirm and save in your directory of choice</p>
-        <a class="btn btn-primary btn-lg" id='createCardInit' onClick='showCardForm(event)' role="button">Create cards</a>
+        <p>Protip to screenshot card on Chrome: Inspect element with id=cardPreview → [Windows] Ctrl + Shift + P / [Mac]
+            Cmd + Shift + P → type "node screenshot" → Confirm and save in your directory of choice</p>
+        <a class="btn btn-primary btn-lg" id='createCardInit' onClick='showCardForm(event)' role="button">Create
+            cards</a>
     </div>
     <div class='container'>
         <div class='row d-none' id='deckFormBlock'>
@@ -22,7 +27,9 @@
                 <form id='deckForm' role="form" enctype="multipart/form-data" method="POST">
                     <div class='form-group'>
                         <input type='hidden' name='deckId' id='deckId' class='form-control'>
-                        <label for='DeckNameInput'><h5>Name of deck</h5></label>
+                        <label for='DeckNameInput'>
+                            <h5>Name of deck</h5>
+                        </label>
                         <input type='text' name='deckNameInput' id='deckNameInput' class='form-control'>
                     </div>
                     <div id='crudButton'></div>
@@ -35,54 +42,69 @@
                     <input class='d-none' type='text' name='cardId' id='cardId' value='defaultCardId'>
                     <input class='d-none' type='text' name='cardImgUrl' id='cardImgUrl' value='defaultImgUrl'>
                     <div class='form-group'>
-                        <label for='cardNameInput'><h5>Name of card</h5></label>
-                        <input type='text' name='cardNameInput' id='cardNameInput' class='form-control' onInput='previewMatch(id)'>
+                        <label for='cardNameInput'>
+                            <h5>Name of card</h5>
+                        </label>
+                        <input type='text' name='cardNameInput' id='cardNameInput' class='form-control'
+                            onInput='previewMatch(id)'>
                     </div>
                     <div class='form-group'>
-                        <label for='cardDescInput'><h5>Description</h5></label>
-                        <textarea name='cardDescInput' id='cardDescInput' class='form-control' onInput='previewMatch(id)'></textarea>
+                        <label for='cardDescInput'>
+                            <h5>Description</h5>
+                        </label>
+                        <textarea name='cardDescInput' id='cardDescInput' class='form-control'
+                            onInput='previewMatch(id)'></textarea>
                     </div>
-                    
-                    
-                        <div class="form-group">
-                            <label for='imageFile'><h5>Card art</h5></label>
-                            <input type="file" id="imageFile" name='imageFile' name='imageFile' onChange='previewImg(event)' accept="image/*" class='form-control'>
-                        </div>
-                    
+
+
+                    <div class="form-group">
+                        <label for='imageFile'>
+                            <h5>Card art</h5>
+                        </label>
+                        <input type="file" id="imageFile" name='imageFile' name='imageFile' onChange='previewImg(event)'
+                            accept="image/*" class='form-control'>
+                    </div>
+
                     <div id='apiMessage' class="alert alert-success d-none"></div>
 
                     <div class='form-group'>
-                        <label for='cardAttrInputList'><h5>Attributes</h5></label>
+                        <label for='cardAttrInputList'>
+                            <h5>Attributes</h5>
+                        </label>
                         <div id='cardAttrInputList'></div>
-                        <button type="button" class='btn btn-primary mt-3' onClick='addAttribute()'>Add attribute</button>
+                        <button type="button" class='btn btn-primary mt-3' onClick='addAttribute()'>Add
+                            attribute</button>
                     </div>
                     <div id='crudButtons'></div>
-                    
+
                 </form>
             </div>
             <div class='col-md-6 col-lg-4' id='cardPreviewBlock'>
-            <div class="card" id='cardPreview'>
-                <h5 class="card-title card-body" id='cardNamePreview'>Card title</h5>
-            <img src="./assets/img/The Challengers.png" class="card-img-top img-fluid" id='cardImgPreview' alt="example image">
-            <p class="card-text card-body" id='cardDescPreview'>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <ul class="list-group list-group-flush" id='cardAttrListPreview'></ul>
-            </div>
+                <div class="card" id='cardPreview'>
+                    <h5 class="card-title card-body" id='cardNamePreview'>Card title</h5>
+                    <img src="./assets/img/The Challengers.png" class="card-img-top img-fluid" id='cardImgPreview'
+                        alt="example image">
+                    <p class="card-text card-body" id='cardDescPreview'>Some quick example text to build on the card
+                        title and make up the bulk of the card's content.</p>
+                    <ul class="list-group list-group-flush" id='cardAttrListPreview'></ul>
+                </div>
             </div>
         </div>
-        <div id='deckListMain'>   
+        <div id='deckListMain'>
             <hr>
             <h3>List of Decks</h3>
             <div class='row' id='deckListBlock'>
             </div>
-        </div>        <!-- {{{block 'example'}}} -->
-        <div id='cardListMain'>   
+        </div> <!-- {{{block 'example'}}} -->
+        <div id='cardListMain'>
             <hr>
             <h3>List of cards</h3>
-            <div class='row' id='cardListBlock'>        
-            <!-- {{{block 'cardList'}}} -->
+            <div class='row' id='cardListBlock'>
+                <!-- {{{block 'cardList'}}} -->
             </div>
         </div>
 
     </div>
 </body>
+
 </html>

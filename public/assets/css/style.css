@@ -5,3 +5,20 @@ body {
     background-color: #292961;
     color: #fff;
 }
+.previewCard{
+    min-width: fit-content;
+    text-align: left;
+}
+
+@media (max-width: 976px) { 
+    .previewCard{
+        min-width: fit-content;
+        text-align: left;
+        padding: 0em;
+        margin: 0em;
+    }
+    .cardPreviewBody{
+        padding: 0em;
+        margin: 0em;
+    }
+}
