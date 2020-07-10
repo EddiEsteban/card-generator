@@ -219,7 +219,6 @@ function showDeckForm(event, id) {
     let deckListEl = document.querySelector('#deckListMain')
     deckListEl.classList.add('d-none')
     let crudButton = document.querySelector('#crudButton')
-    console.log('event.target.id: ', event.target.id)
     crudButton.innerHTML = `<button type='submit' class='btn btn-primary' onClick='editDeck(event)'>Edit deck</button>`
     let deckFormEl = document.querySelector('#deckFormBlock')
     deckFormEl.classList.remove('d-none')
@@ -252,10 +251,8 @@ async function showAllDecks() {
 
 async function getDeck(event) {
     event.preventDefault()
-    console.log(event.target.parentNode.parentNode)
     let deckEl = event.target.parentNode.parentNode
     let id = deckEl.dataset.deckId
-    console.log('getDeck: id ', id)
     let deck = await apiCall(`/api/decks/${id}`)
     showDeckForm(event, id)
     fillDeckForm(deck)
@@ -278,6 +275,7 @@ async function editDeck(event) {
     deckListEl.classList.remove('d-none')
     clearDeckForm()
     showAllDecks()
+    showAllCards()
     hideDeckForm()
     return response
 }
@@ -286,7 +284,7 @@ async function deleteDeck() {
     event.preventDefault()
     let deckEl = event.target.parentNode.parentNode
     let id = deckEl.dataset.deckId
-    console.log('delete id ', id)
+    console.log('[deleteDeck] delete id ', id)
     let result = await apiCall(`/api/decks/${id}`, 'delete')
     showAllDecks()
     return result

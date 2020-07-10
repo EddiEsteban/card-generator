@@ -4,6 +4,7 @@ const router = require('./config/router')
 // const exphbs = require('express-handlebars')
 const orm = require('./config/orm') // just for testing orm
 
+// Was for handlebars but decided to switch back to html to commented this out
 // const hbs = exphbs.create({
 //     helpers: {
 //         block: function(name){
@@ -36,7 +37,7 @@ app.use(express.json())
 // enter routing here *******
 router(app)
 
-app.use( express.static('public') )
+app.use(express.static('public'))
 
 // Start the server so that it can begin listening to client requests.
 app.listen(PORT, function () {
