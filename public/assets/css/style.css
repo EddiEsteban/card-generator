@@ -5,19 +5,19 @@ body {
     background-color: #292961;
     color: #fff;
 }
-.previewCard{
+.previewName{
     min-width: fit-content;
     text-align: left;
 }
 
 @media (max-width: 976px) { 
-    .previewCard{
+    .previewName{
         min-width: fit-content;
         text-align: left;
         padding: 0em;
         margin: 0em;
     }
-    .cardPreviewBody{
+    .previewBody{
         padding: 0em;
         margin: 0em;
     }

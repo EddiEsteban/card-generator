@@ -112,8 +112,8 @@ function hideCardForm() {
 let cardThumbnail = (card) => {
     return `<div class="card col-4 col-sm-3 col-md-2" data-card-id='${card.id}' data-card-img-url='${card.img}'>` +
         `<img src="${card.img}" class="card-img-top img-fluid" alt="...">` +
-        `<div class="card-body cardPreviewBody">` +
-        `<h6 class="card-title previewCard">${card.name}</h6>` +
+        `<div class="card-body previewBody">` +
+        `<h6 class="card-title previewName">${card.name}</h6>` +
         `<button class='btn btn-secondary editBtn' onClick='getCard(event)'>📝</button>` +
         `<button class='btn btn-danger delBtn' onClick='deleteCard(event)'>🗑</button>` +
         `</div></div>`
@@ -231,8 +231,8 @@ function showDeckForm(event, id) {
 let deckThumbnail = (deck) => {
     return `<div class="card col-4 col-sm-3 col-md-2" data-deck-id='${deck.id}'>` +
         `<img src="${deck.img}" class="card-img-top img-fluid" alt="...">` +
-        `<div class="card-body">` +
-        `<h6 class="card-title">${deck.name}</h6>` +
+        `<div class="card-body previewBody">` +
+        `<h6 class="card-title previewName">${deck.name}</h6>` +
         `<button class='btn btn-secondary editBtn' onClick='getDeck(event)'>📝</button>` +
         `<button class='btn btn-danger delBtn' onClick='deleteDeck(event)'>🗑</button>` +
         `</div></div>`
